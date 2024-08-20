@@ -489,7 +489,7 @@ const Events = () => {
                     </>
                   )}
 
-                  {selectedBranch && selectedDepartment ? (
+                  {/* {selectedBranch && selectedDepartment ? (
                     <>
                       {employees ? (
                         <ChakraDropdown
@@ -505,7 +505,7 @@ const Events = () => {
                     </>
                     ):(
                       <Text>Filtrelemeye devam etmek için önceki seçimleri yapınız.</Text>
-                    )}
+                    )} */}
                   {/* <Button colorScheme='blue' onClick={resetFilters}>RESET</Button> */}
                   <IconButton colorScheme='blue' onClick={resetFilters} icon={<GrPowerReset />} />
                 </Stack>
