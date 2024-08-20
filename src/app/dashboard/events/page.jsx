@@ -471,7 +471,7 @@ const Events = () => {
                     </>
                   )}
 
-                  {/* {showBranchDropdown && (
+                  {showBranchDropdown && (
                     <>
                       {branches ? (
                         <ChakraDropdown
@@ -487,7 +487,7 @@ const Events = () => {
                     </>
                   )}
 
-                  {employees ? (
+                  {/* {employees ? (
                         <ChakraDropdown
                           options={employees}
                           label="PERSONEL"
