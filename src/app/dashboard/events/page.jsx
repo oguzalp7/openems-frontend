@@ -452,7 +452,7 @@ const Events = () => {
           </h2>
           <AccordionPanel pb={4}>
             <Box w={['sm', 'md', 'lg', '2xl']}>
-                <Stack flexDir={['column', 'row', 'row', 'row']}>
+                <Stack flexDir={['column', 'row', 'row', 'row']} justify="center" align="center">
 
                   {date ? (
                     <DatePicker selectedDate={date} onSelect={handleSelectDate}/>
