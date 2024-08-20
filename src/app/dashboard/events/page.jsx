@@ -455,7 +455,7 @@ const Events = () => {
                     <Loading/>
                   )}
 
-                  {/* {showDepartmentDropdown && ( // static decision
+                  {showDepartmentDropdown && ( // static decision
                     <>
                       {departments ? ( // dynamic data loading
                         <ChakraDropdown
@@ -471,7 +471,7 @@ const Events = () => {
                     </>
                   )}
 
-                  {showBranchDropdown && (
+                  {/* {showBranchDropdown && (
                     <>
                       {branches ? (
                         <ChakraDropdown
