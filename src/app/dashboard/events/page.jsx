@@ -22,6 +22,9 @@ import {
 import { GrPowerReset } from "react-icons/gr";
 import ChakraDataTable from '@/components/data-table.component';
 import Loading from '@/components/loading.component';
+import UpdateModal from '@/components/update-modal.component';
+import EventUpdateForm from '@/components/forms/event-update-form.component';
+
 
 const Events = () => {
   const {user} = useContext(AuthContext);
@@ -523,16 +526,17 @@ const Events = () => {
       ):(
         <Loading/>
       )}
-      {/* {isModalOpen && modalContent && recordId && (
+      {isModalOpen && modalContent && recordId && (
         <UpdateModal
           isClosed={!isModalOpen}
           contentButtons={contentButtons}
           actionButtons={actionButtons}
           onClose={handleCloseModal}
         >
-          <UpdateEventForm onSubmit={handleSubmit} defaultValues={modalContent} eventId={recordId} />
-          </UpdateModal>
-        )} */}
+          
+          <EventUpdateForm onSubmit={handleSubmit} defaultValues={modalContent} eventId={recordId} />
+        </UpdateModal>
+        )}
       </VStack>
     </ProtectedRoute>
   )
