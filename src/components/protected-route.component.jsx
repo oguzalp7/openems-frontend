@@ -18,7 +18,7 @@ const ProtectedRoute = ({children}) => {
     }, [user, router]);
 
     return user ? (
-        <Stack flexDir={'column'}>
+        <Stack flexDir={'column'} justify="center" align="center">
             <Navbar/>
             <Flex as="main" flex="1" justify="center" align="center" w={'full'}>
                 {children}
