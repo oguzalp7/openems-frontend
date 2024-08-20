@@ -24,7 +24,8 @@ import ChakraDataTable from '@/components/data-table.component';
 import Loading from '@/components/loading.component';
 import UpdateModal from '@/components/update-modal.component';
 import EventUpdateForm from '@/components/forms/event-update-form.component';
-
+import PaymentForm from '@/components/forms/payment-form.component';
+import BridesMaidForm from '@/components/forms/bridesmaid-form.component';
 
 const Events = () => {
   const {user} = useContext(AuthContext);
@@ -165,7 +166,6 @@ const Events = () => {
     configureEmployeeFetchOptions();
   }, [selectedDepartment, selectedBranch]);
 
-  console.log(user)
   //fetch dropdown data for department
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -378,18 +378,18 @@ const Events = () => {
   ];
 
   const contentButtons = [
-    // {
-    //   label: 'ÖDEME',
-    //   colorScheme: 'green',
-    //   newContent: <PaymentForm remainingPayment={row['BAKİYE']} recordId={recordId}/>,
-    //   disabled: (row['BAKİYE'] ? false : true) || row['İŞLEM'] === 'GELİN+'
-    // },
-    // {
-    //   label: 'GELİN+',
-    //   colorScheme: 'purple',
-    //   newContent: <BridesMaidForm recordId={recordId} selectedBranch={selectedBranch} selectedDate={date}/>,
-    //   disabled: selectedDepartment === '' || !(selectedDepartment === '1') || row['İŞLEM'] === 'GELİN+' || !(row['GELİN+'] > 0)
-    // },
+    {
+      label: 'ÖDEME',
+      colorScheme: 'green',
+      newContent: <PaymentForm remainingPayment={row['BAKİYE']} recordId={recordId}/>,
+      disabled: (row['BAKİYE'] ? false : true) || row['İŞLEM'] === 'GELİN+'
+    },
+    {
+      label: 'GELİN+',
+      colorScheme: 'purple',
+      newContent: <BridesMaidForm recordId={recordId} selectedBranch={selectedBranch} selectedDate={date}/>,
+      disabled: selectedDepartment === '' || !(selectedDepartment === '1') || row['İŞLEM'] === 'GELİN+' || !(row['GELİN+'] > 0)
+    },
   ];
   
 
@@ -435,7 +435,7 @@ const Events = () => {
     },
   ];
 
-  console.log(employees)
+  
   return (
     <ProtectedRoute>
       <VStack>
