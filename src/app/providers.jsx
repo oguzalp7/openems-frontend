@@ -13,8 +13,7 @@ export function Providers({ children }) {
         <ChakraProvider theme={theme}>
             <Layout>
                 {children}
-            </Layout>
-                
+            </Layout> 
             <Footer/>
         </ChakraProvider>
     </CacheProvider>

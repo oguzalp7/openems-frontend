@@ -1,6 +1,6 @@
 
 import { Providers } from "./providers";
-
+import { AuthProvider } from "@/context/AuthContext";
 export const metadata = {
   title: "MS-Randevu",
   description: "Müberya Sağlam Pro. Make-up Studio",
@@ -12,7 +12,9 @@ export default function RootLayout({children}) {
     <html lang="en">
       <body suppressHydrationWarning>
         <Providers>
-            {children}
+            <AuthProvider>
+              {children}
+            </AuthProvider>
         </Providers>
       </body>
     </html>

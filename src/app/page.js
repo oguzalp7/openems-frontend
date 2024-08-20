@@ -2,27 +2,25 @@
 
 import { useToast, Button, Stack } from "@chakra-ui/react"
 import PwaModal from "@/components/pwa-modal"
+
+import { apiClient } from "@/apiClient"
+import { useEffect, useState } from "react"
+
+
 export default function Home() {
+  const[res, setRes] = useState("");
 
-  const toast = useToast()
+  useEffect(() => {
+    const checkAPI = async () => {
+      const response = await apiClient.get("/")
+      
+      setRes(response.data);
+    }
+    checkAPI();
+  }, []);
+  
+  //const toast = useToast()
   return (
-    // <Stack flexDir={'column'}>
-    // <Button
-    //   onClick={() =>
-    //     toast({
-    //       title: 'Account created.',
-    //       description: "We've created your account for you.",
-    //       status: 'success',
-    //       duration: 9000,
-    //       isClosable: true,
-    //     })
-    //   }
-    // >
-    //   Show Toast
-    // </Button>
-
-    
-    // </Stack>
-    <PwaModal/>
+    <>Home</>
   )
 }
