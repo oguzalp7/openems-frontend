@@ -455,7 +455,7 @@ const Events = () => {
                     <Loading/>
                   )}
 
-                  {showDepartmentDropdown && ( // static decision
+                  {/* {showDepartmentDropdown && ( // static decision
                     <>
                       {departments ? ( // dynamic data loading
                         <ChakraDropdown
@@ -497,7 +497,7 @@ const Events = () => {
                         />
                       ):(
                         <Loading/>
-                      )}
+                      )} */}
                   {/* <Button colorScheme='blue' onClick={resetFilters}>RESET</Button> */}
                   <IconButton colorScheme='blue' onClick={resetFilters} icon={<GrPowerReset />} />
                 </Stack>
