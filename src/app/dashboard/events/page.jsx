@@ -29,10 +29,10 @@ const Events = () => {
   const toast = useToast();
   // dropdown configuration
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(user.department || "");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   // dropdown configuration
   const [branches, setBranches] = useState([]);
-  const [selectedBranch, setSelectedBranch] = useState(user.branch_id || '');
+  const [selectedBranch, setSelectedBranch] = useState('');
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
