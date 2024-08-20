@@ -25,12 +25,12 @@ export const AuthProvider = ({children}) => {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             });
             
-            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
             localStorage.setItem('token', response.data.token);
             setUser(response.data)
             router.push('/dashboard/events')
         } catch (error) {
-            console.log(error)
+            //console.log(error)
             toast({
                 title: 'Giriş Başarısız.',
                 description: error.response.data.detail,
