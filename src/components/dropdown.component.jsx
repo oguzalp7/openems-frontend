@@ -21,7 +21,7 @@ const ChakraDropdown = ({options, label, initialValue, value, onSelect}) => {
     <Box>
         <Select value={selectedValue} onChange={handleChange}>
         <option value={initialValue} label={`${label}`}><Text>{`${label}`}</Text></option>
-        {options && options.map((option) => (
+        {options.map((option) => (
             <option key={option.id} value={option.id || option.ID} label={option["AD-SOYAD"] || option.name} >{option["AD-SOYAD"]  || option.name}</option>
         ))}
         </Select>
