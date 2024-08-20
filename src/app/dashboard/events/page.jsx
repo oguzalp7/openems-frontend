@@ -17,6 +17,7 @@ import {
   Stack,
   VStack,
   IconButton,
+  Text,
 } from '@chakra-ui/react'
 import { GrPowerReset } from "react-icons/gr";
 import ChakraDataTable from '@/components/data-table.component';
@@ -28,10 +29,10 @@ const Events = () => {
   const toast = useToast();
   // dropdown configuration
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState(user.department || "");
   // dropdown configuration
   const [branches, setBranches] = useState([]);
-  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState(user.branch_id || '');
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -72,6 +73,7 @@ const Events = () => {
         // do not show dropdowns.
         if(user.branch_id && user.branch_id > 0){
             let bid = user.branch_id;
+            console.log(bid)
             setSelectedBranch(bid)
         }
         if(user.department && user.department > 0 && user.department < 4){
@@ -83,7 +85,7 @@ const Events = () => {
       }
     }
     fetchSessionAndConfigure()
-  }, []);
+  }, [user]);
 
   // fetch dropdown data for department
   useEffect(() => {
@@ -160,7 +162,7 @@ const Events = () => {
     configureEmployeeFetchOptions();
   }, [selectedDepartment, selectedBranch]);
 
-  console.log(employeeUrl)
+  console.log(user)
   //fetch dropdown data for department
   useEffect(() => {
     const fetchEmployees = async () => {
@@ -430,7 +432,7 @@ const Events = () => {
     },
   ];
 
-
+  console.log(employees)
   return (
     <ProtectedRoute>
       <VStack>
@@ -487,7 +489,9 @@ const Events = () => {
                     </>
                   )}
 
-                  {/* {employees ? (
+                  {selectedBranch && selectedDepartment ? (
+                    <>
+                      {employees ? (
                         <ChakraDropdown
                           options={employees}
                           label="PERSONEL"
@@ -497,7 +501,11 @@ const Events = () => {
                         />
                       ):(
                         <Loading/>
-                      )} */}
+                      )}
+                    </>
+                    ):(
+                      <Text>Filtrelemeye devam etmek için önceki seçimleri yapınız.</Text>
+                    )}
                   {/* <Button colorScheme='blue' onClick={resetFilters}>RESET</Button> */}
                   <IconButton colorScheme='blue' onClick={resetFilters} icon={<GrPowerReset />} />
                 </Stack>
