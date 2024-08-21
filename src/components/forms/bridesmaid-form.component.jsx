@@ -123,7 +123,7 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
         try {
             const response = await apiClient.post('/event/', data);
             //console.log('Event created:', response.data);
-            console.log(response)
+            
             toast({
                     title: 'Nedime Randevusu Başarıyla Oluşturuldu.',
                     description: ``,
@@ -146,9 +146,13 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
         }
     }
 
+    const handleFormChange = (values) => {
+        //console.log(values)
+    }
+
     return (
         <Box w={'full'}>
-            <AdvancedDynamicForm formConfig={updatedFormConfig} onSubmit={handleSubmit} onFormChange={(data) => {console.log(data)}} defaultValues={defaultValues}/>
+            <AdvancedDynamicForm formConfig={updatedFormConfig} onSubmit={handleSubmit} onFormChange={handleFormChange} defaultValues={defaultValues}/>
         </Box>
     )
 }
