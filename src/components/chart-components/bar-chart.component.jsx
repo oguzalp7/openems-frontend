@@ -30,12 +30,12 @@ const BarChart = ({chartTitle, chartData}) => {
 
   //const [sampleData, setSampleData] = useState({})
 
-  // useEffect(() => {
-  //   if(chartData){
-  //     setLabels(chartData.map((data) => data.label));
-  //     setData(chartData.map((data) => data.data));
-  //   }
-  // }, [chartData]);
+  useEffect(() => {
+    if(chartData){
+      setLabels(chartData.map((data) => data.label));
+      setData(chartData.map((data) => data.data));
+    }
+  }, [chartData]);
   
 
   // useEffect(() => {
