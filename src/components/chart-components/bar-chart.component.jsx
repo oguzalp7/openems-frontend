@@ -31,9 +31,13 @@ const BarChart = ({chartTitle, chartData}) => {
   //const [sampleData, setSampleData] = useState({})
 
   useEffect(() => {
-    if(chartData){
-      setLabels(chartData.map((data) => data.label));
-      setData(chartData.map((data) => data.data));
+    if (Array.isArray(chartData)) {
+      setLabels(chartData.map((data) => data.label || ""));
+      setData(chartData.map((data) => data.data || 0));
+    } else {
+      console.error("chartData is not an array:", chartData);
+      setLabels([]);
+      setData([]);
     }
   }, [chartData]);
   

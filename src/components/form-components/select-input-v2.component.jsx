@@ -32,7 +32,7 @@ const SelectInputV2 = ({ name, label, options, control }) => {
     <FormControl isInvalid={!!error}>
       <FormLabel htmlFor={name}></FormLabel>
       <Select id={name} ref={ref} value={value} onChange={onChange}>
-        {!value && <option value={""}><Text>{label_ ? label_.toUpperCase() : 'LABEL NOT FOUND'}</Text></option>}
+        {!value && <option value={""}>{label_ ? label_.toUpperCase() : 'LABEL NOT FOUND'}</option>}
         {options.map((option) => (
           <option key={option.id} value={option.id || option.ID}>
             {option["AD-SOYAD"] || option.ADI || option.name}
