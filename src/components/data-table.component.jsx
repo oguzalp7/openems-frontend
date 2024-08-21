@@ -90,7 +90,7 @@ const ChakraDataTable = ({title,  obj, showButtons, customButtons = []}) => {
         <Tr cursor={'pointer'} key={index} onClick={(event) => handleRowClick(obj_, event)}>
             {Object.values(obj_).map((value, index) => (
             <Td key={index}>
-                {typeof value === "boolean" ? (value ? <Checkbox isDisabled defaultChecked/> : <Checkbox isDisabled />) : value}
+                {typeof value === "boolean" ? (value ? <Checkbox isDisabled defaultChecked/> : <Checkbox isDisabled />) : <Text as={'b'} fontSize={'lg'}>{value}</Text>}
             </Td>
             ))}
         {hasCustomButtons &&  showButtons && (
