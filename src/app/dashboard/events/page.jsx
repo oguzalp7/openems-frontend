@@ -40,8 +40,8 @@ const Events = () => {
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
-
-  // dropdown configuration
+  const timestamp = convertDateToTimestamp(date);
+  
   const [employees, setEmployees] = useState([]);
   const [selectedEmployee, setSelectedEmployee] = useState('')
   const [employeeUrl, setEmployeeUrl] = useState('')
@@ -49,7 +49,7 @@ const Events = () => {
   // main data hooks
   const [originalData, setOriginalData] = useState([])
   const [data, setData] = useState([]);
-  const [url, setURL] = useState('/event/?skip=0&limit=10');
+  const [url, setURL] = useState(`/event/?skip=0&limit=10&t=${timestamp}`);
 
   const [showBranchDropdown, setShowBranchDropdown] = useState(false);
   const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
