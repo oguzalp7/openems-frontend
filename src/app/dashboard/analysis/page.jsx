@@ -244,14 +244,22 @@ const Analysis = () => {
                         <Loading/>
                     )}
 
-                    {chartData && tableData ? (
-                        <HStack spacing={1} overflow={'auto'} w={'lg'} border={'1px'} borderColor={'gray.300'} borderRadius={10}>
+                    <HStack spacing={1} overflow={'auto'} w={'lg'} border={'1px'} borderColor={'gray.300'} borderRadius={10}>
+                        {chartData ? (
                             <AnalysisTable data={chartData} title='TOPLAM'/>
+                        ):(
+                            <Loading/>
+                        )}
+
+                        {tableData ? (
                             <AnalysisTable data={tableData} title='İŞLEMLER'/>
-                        </HStack>
-                    ): (
-                        <Loading/>
-                    )}
+                        ):(
+                            <Loading/>
+                        )}
+
+
+                    </HStack>
+                    
 
                 </VStack>
             </Box>
