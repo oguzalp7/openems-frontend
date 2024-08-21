@@ -1,11 +1,13 @@
 "use client"
-
+import ProtectedRoute from "@/components/protected-route.component"
 
 
 
 export default function Home() {
   
   return (
-    <>Home</>
+    <ProtectedRoute>
+      Geçici Deneme Sayfası
+    </ProtectedRoute>
   )
 }

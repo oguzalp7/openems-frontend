@@ -48,7 +48,8 @@ const ChakraDataTable = ({title,  obj, showButtons, customButtons = []}) => {
         w={['sm', 'lg', 'xl', 'full']}
         //w={['sm']} //daraltma
         maxWidth={'100%'}
-        h={['sm', 'md',  'auto']}
+        //h={['sm', 'md',  'auto']}
+        maxHeight={"70vh"}
         p={[0, 8, 0, 0]}
         //marginLeft={[-90, -50, -100]}
         overflowX={'auto'}
@@ -65,10 +66,11 @@ const ChakraDataTable = ({title,  obj, showButtons, customButtons = []}) => {
     <Table 
     variant='striped' 
     colorScheme='blue' 
-    size={['sm']}  
+    size={['md']}  
     w={['full']}
     //overflowX={'auto'}
     //overflowY={'auto'}
+    layout={["none",  "none", "none", "fixed"]}
     >
     
     <Thead>

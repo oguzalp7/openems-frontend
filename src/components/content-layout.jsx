@@ -1,6 +1,6 @@
 "use client"
 import { Box, Flex } from '@chakra-ui/react';
-
+import Footer from './footer';
 
 const Layout = ({ children }) => {
   return (
@@ -13,7 +13,7 @@ const Layout = ({ children }) => {
         {/* </Box> */}
       </Flex>
       
-      
+      <Footer/>
     </Flex>
   );
 };
