@@ -8,11 +8,13 @@ const AnalysisTable = ({ data, title }) => {
 
   const [tableData, setTableData] = useState([]);
   
-  // useEffect(() => {
-  //   if(data){
-  //     setTableData(data)
-  //   }
-  // },[data]);
+  useEffect(() => {
+    if(Array.isArray(data)){
+      setTableData(data)
+    }else{
+      setTableData([])
+    }
+  },[data]);
 
   return (
     <Box width="100%" padding="20px">
