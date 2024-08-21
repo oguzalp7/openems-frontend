@@ -423,6 +423,12 @@ const EventForm = () => {
         'Num Nail Arts': 'NAİLART+'
     }
     updatedFormConfig = renameFormLabels(updatedFormConfig, labelMapping);
+
+    if(selectedDepartment === '1'){
+        updatedFormConfig = renameFormLabels(updatedFormConfig, {"PERSONEL": "MAKEUP"});
+    }else if(selectedDepartment === '2'){
+        
+    }
     
     if(selectedDepartment === '1' || selectedDepartment === '2'){
         const order = [

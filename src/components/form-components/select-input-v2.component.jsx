@@ -19,7 +19,7 @@ const SelectInputV2 = ({ name, label, options, control }) => {
     'Auth Id': 'YETKİ',
     'Branch Id': 'ŞUBE',
     'Employment Type Id': 'ÇALIŞMA TİPİ',
-    'Employee Id': 'PERSONEL',
+    'Employee Id': 'MAKEUP',
     'Optional Makeup Id': 'MAKEUP2',
     'Hair Stylist Id': 'SAÇ',
     'Plus': 'GELİN+',
