@@ -166,8 +166,8 @@ const Analysis = () => {
 
     return (
         <ProtectedRoute>
-            <Box>
-                <VStack>
+            
+                <VStack w={['sm', 'full']}>
                     <Accordion defaultIndex={[0]} allowToggle>
                         <AccordionItem>
                             <h2>
@@ -244,7 +244,7 @@ const Analysis = () => {
                         <Loading/>
                     )}
 
-                    <HStack spacing={1} overflow={'auto'} w={'lg'} border={'1px'} borderColor={'gray.300'} borderRadius={10}>
+                    <HStack spacing={1} overflow={'auto'} w={['md', 'lg']} border={'1px'} borderColor={'gray.300'} borderRadius={10}>
                         {chartData ? (
                             <AnalysisTable data={chartData} title='TOPLAM'/>
                         ):(
@@ -262,7 +262,7 @@ const Analysis = () => {
                     
 
                 </VStack>
-            </Box>
+        
         </ProtectedRoute>
     )
 }

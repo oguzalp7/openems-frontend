@@ -12,6 +12,7 @@ import {
     Legend
 } from 'chart.js';
 import Loading from "../loading.component";
+import { Stack } from "@chakra-ui/react";
 
 
 ChartJS.register(
@@ -42,28 +43,7 @@ const BarChart = ({chartTitle, chartData}) => {
   }, [chartData]);
   
 
-  // useEffect(() => {
-  //   if(chartData){
-  //     try {
-  //       setSampleData({
-  //         labels: chartData.map((data) => data.label),
-  //         datasets: [
-  //             {
-  //                 label: 'TOPLAM',
-  //                 data: chartData.map((data) => data.data),
-  //                 backgroundColor: 'rgba(160, 200, 255, 0.8)',
-  //                 borderColor: ['rgba(54, 162, 235, 1)'],
-  //                 borderWidth: 1
-  //             },
-  //         ],
-  //       })
-  //     } catch (error) {
-  //       alert(error)
-  //     }
-      
-  //   }
-  // }, [chartData]);
-  
+
 
   const sampleData = {
     labels: labels,
