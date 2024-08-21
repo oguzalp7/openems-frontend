@@ -29,7 +29,7 @@ const BarChart = ({chartTitle, chartData}) => {
     datasets: [
         {
             label: 'TOPLAM',
-            data: chartData.map((data) => data.data),
+            data: chartData?.map((data) => data.data),
             backgroundColor: 'rgba(160, 200, 255, 0.8)',
             borderColor: ['rgba(54, 162, 235, 1)'],
             borderWidth: 1
