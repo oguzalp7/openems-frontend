@@ -7,12 +7,12 @@ import { useState, useEffect } from 'react';
 const AnalysisTable = ({ data, title }) => {
 
   const [tableData, setTableData] = useState([]);
-  console.log(data)
-  useEffect(() => {
-    if(data){
-      setTableData(data)
-    }
-  },[data]);
+  
+  // useEffect(() => {
+  //   if(data){
+  //     setTableData(data)
+  //   }
+  // },[data]);
 
   return (
     <Box width="100%" padding="20px">

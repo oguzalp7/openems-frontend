@@ -11,6 +11,7 @@ import {
     Tooltip,
     Legend
 } from 'chart.js';
+import Loading from "../loading.component";
 
 
 ChartJS.register(
@@ -25,15 +26,39 @@ ChartJS.register(
 
 const BarChart = ({chartTitle, chartData}) => {
   const [labels, setLabels] = useState([]);
-  const [data, setData] = useState([])
+  const [data, setData] = useState([]);
 
-  useEffect(() => {
-    if(chartData){
-      setLabels(chartData.map((data) => data.label));
-      setData(chartData.map((data) => data.data));
-    }
-  }, [chartData]);
+  //const [sampleData, setSampleData] = useState({})
+
+  // useEffect(() => {
+  //   if(chartData){
+  //     setLabels(chartData.map((data) => data.label));
+  //     setData(chartData.map((data) => data.data));
+  //   }
+  // }, [chartData]);
   
+
+  // useEffect(() => {
+  //   if(chartData){
+  //     try {
+  //       setSampleData({
+  //         labels: chartData.map((data) => data.label),
+  //         datasets: [
+  //             {
+  //                 label: 'TOPLAM',
+  //                 data: chartData.map((data) => data.data),
+  //                 backgroundColor: 'rgba(160, 200, 255, 0.8)',
+  //                 borderColor: ['rgba(54, 162, 235, 1)'],
+  //                 borderWidth: 1
+  //             },
+  //         ],
+  //       })
+  //     } catch (error) {
+  //       alert(error)
+  //     }
+      
+  //   }
+  // }, [chartData]);
   
 
   const sampleData = {
@@ -62,7 +87,15 @@ const BarChart = ({chartTitle, chartData}) => {
       },
     };
 
-  return (<Bar options={options} data={sampleData}/>);
+  return (
+    <>
+      {chartData ? (
+        <Bar options={options} data={sampleData}/>
+      ):(
+        <Loading/>
+      )}
+    </>
+  );
 
 
 }
