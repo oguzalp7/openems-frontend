@@ -244,7 +244,7 @@ const Analysis = () => {
                         <Loading/>
                     )}
 
-                    <HStack spacing={1} overflow={'auto'} w={['sm', 'lg']} border={'1px'} borderColor={'gray.300'} borderRadius={10}>
+                    <HStack spacing={1} overflow={'auto'} w={['sm', 'lg']}>
                         {chartData ? (
                             <AnalysisTable data={chartData} title='TOPLAM'/>
                         ):(
