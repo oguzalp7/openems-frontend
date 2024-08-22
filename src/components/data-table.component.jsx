@@ -70,7 +70,7 @@ const ChakraDataTable = ({title,  obj, showButtons, customButtons = []}) => {
     w={['full']}
     //overflowX={'auto'}
     //overflowY={'auto'}
-    layout={["none",  "none", "none", "fixed"]}
+    //layout={["none",  "none", "none", "fixed"]}
     >
     
     <Thead>

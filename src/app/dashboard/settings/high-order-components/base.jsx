@@ -124,7 +124,7 @@ const BaseHOC = ({form, slug, tableTitle, fetchUrl, updateForm }) => {
 
     return (
         <Box
-        w={['sm', 'md', 'lg', 'full']}
+        w={['sm', 'md', 'lg', '8xl']}
         >
             {form && (
                 <VStack>
