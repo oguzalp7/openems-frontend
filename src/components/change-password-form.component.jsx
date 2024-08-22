@@ -5,7 +5,7 @@ import AuthContext from "@/context/AuthContext";
 import React from "react";
 import PasswordInput from "./password-input.component";
 import { Box, VStack, Button, useToast } from "@chakra-ui/react";
-import apiClient from "@/apiClient";
+import { apiClient } from "@/apiClient";
 
 const ChangePasswordForm = () => {
     

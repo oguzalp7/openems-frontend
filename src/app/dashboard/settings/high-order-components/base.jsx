@@ -42,7 +42,6 @@ const BaseHOC = ({form, slug, tableTitle, fetchUrl, updateForm }) => {
     const handleUpdate = (rowData) => {
         
         setRecordId(rowData.id || rowData.ID)
-        console.log(`${slug}/${recordId}`)
         setIsModalOpen(true);
     };
 
@@ -144,7 +143,7 @@ const BaseHOC = ({form, slug, tableTitle, fetchUrl, updateForm }) => {
             )}
             
 
-            {isModalOpen && modalContent && (
+            {isModalOpen && modalContent && user && user.auth_level > 4 && (
                 <UpdateModal
                 isClosed={!isModalOpen}
                 contentButtons={[]}
