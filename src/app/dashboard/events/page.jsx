@@ -33,10 +33,22 @@ const Events = () => {
   const toast = useToast();
   // dropdown configuration
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState(user.department || "");
+  const [selectedDepartment, setSelectedDepartment] = useState("");
   // dropdown configuration
   const [branches, setBranches] = useState([]);
-  const [selectedBranch, setSelectedBranch] = useState(user.branch_id || '');
+  const [selectedBranch, setSelectedBranch] = useState("");
+
+  useEffect(() => {
+    if(user && user.department){
+      setSelectedDepartment(user.department)
+    }
+  }, [user, user.department]);
+
+  useEffect(() => {
+    if(user && user.branch_id){
+      setSelectedBranch(user.branch_id);
+    }
+  }, [user, user.branch_id]);
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -49,7 +61,7 @@ const Events = () => {
   // main data hooks
   const [originalData, setOriginalData] = useState([])
   const [data, setData] = useState([]);
-  const [url, setURL] = useState(`/event/?skip=0&limit=10&t=${timestamp}&b=${selectedBranch}&dep=${selectedDepartment}`);
+  const [url, setURL] = useState(selectedBranch ? `/event/?skip=0&limit=10&t=${timestamp}&b=${selectedBranch}`: `/event/?skip=0&limit=10&t=${timestamp}`);
 
   const [showBranchDropdown, setShowBranchDropdown] = useState(false);
   const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
