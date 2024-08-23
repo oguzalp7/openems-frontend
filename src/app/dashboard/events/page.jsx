@@ -33,10 +33,10 @@ const Events = () => {
   const toast = useToast();
   // dropdown configuration
   const [departments, setDepartments] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState("");
+  const [selectedDepartment, setSelectedDepartment] = useState(user.department || "");
   // dropdown configuration
   const [branches, setBranches] = useState([]);
-  const [selectedBranch, setSelectedBranch] = useState('');
+  const [selectedBranch, setSelectedBranch] = useState(user.branch_id || '');
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -49,7 +49,7 @@ const Events = () => {
   // main data hooks
   const [originalData, setOriginalData] = useState([])
   const [data, setData] = useState([]);
-  const [url, setURL] = useState(`/event/?skip=0&limit=10&t=${timestamp}`);
+  const [url, setURL] = useState(`/event/?skip=0&limit=10&t=${timestamp}&b=${selectedBranch}&dep=${selectedDepartment}`);
 
   const [showBranchDropdown, setShowBranchDropdown] = useState(false);
   const [showDepartmentDropdown, setShowDepartmentDropdown] = useState(false);
@@ -73,11 +73,16 @@ const Events = () => {
       }else if(user && user.auth_level && user.auth_level === 4){
           // show dep dropdown only.
           setShowDepartmentDropdown(true);
+          if(user.branch_id && user.branch_id > 0){
+            let bid = user.branch_id;
+            
+            setSelectedBranch(bid)
+          }
       }else if(user && user.auth_level && user.auth_level <= 3){
         // do not show dropdowns.
         if(user.branch_id && user.branch_id > 0){
             let bid = user.branch_id;
-            console.log(bid)
+  
             setSelectedBranch(bid)
         }
         if(user.department && user.department > 0 && user.department < 4){
@@ -90,6 +95,8 @@ const Events = () => {
     }
     fetchSessionAndConfigure()
   }, [user]);
+
+  console.log(selectedDepartment)
 
   // fetch dropdown data for department
   useEffect(() => {
@@ -224,6 +231,7 @@ const Events = () => {
 
   }, [selectedDepartment, selectedBranch, date, selectedEmployee]);
   
+  console.log(url)
 
   const handleSelectDate = (selectedDate) => {
     setDate(selectedDate);

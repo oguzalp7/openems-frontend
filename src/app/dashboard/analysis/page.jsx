@@ -40,13 +40,13 @@ const Analysis = () => {
     const [employees, setEmployees] = useState([]);
     const [selectedEmployee, setSelectedEmployee] = useState('');
 
-    const [chartDataFetchURL, setChartDataFetchURL] = useState('');
-    const [tableDataFetchURL, setTableDataFetchURL] = useState('');
+    const [chartDataFetchURL, setChartDataFetchURL] = useState(`/analysis/chart?start=${convertDateToTimestamp(selectedStartDate)}&end=${convertDateToTimestamp(selectedEndDate)}`);
+    const [tableDataFetchURL, setTableDataFetchURL] = useState(`/analysis/table?start=${convertDateToTimestamp(selectedStartDate)}&end=${convertDateToTimestamp(selectedEndDate)}`);
 
     const [chartData, setChartData] = useState([])
     const [tableData, setTableData] = useState([])
 
-    
+    console.log(chartDataFetchURL)
 
     const handleSelectStartDate = (selectedDate) => {
         setSelectedStartDate(selectedDate);
@@ -70,6 +70,8 @@ const Analysis = () => {
         fetchBranches();
         
     }, [user]);
+
+    
 
     const handleBranchSelect = (selectedId) => {
         setSelectedBranch(selectedId);    

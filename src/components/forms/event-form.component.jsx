@@ -93,6 +93,8 @@ const EventForm = () => {
             setSelectedBranch(user.branch_id);
         }
     }, [user]);
+
+    
     
     const handleSelectBranch = (selectedId) => {
         setSelectedBranch(selectedId);
@@ -638,6 +640,29 @@ const EventForm = () => {
         }))
 
     }, [remainingPayment])
+
+    useEffect(() => {
+        setBaseDefaultValues(
+            {
+                status: 'scheduled',
+                description: ' ',
+                branch_id: selectedBranch,
+                date: new Date().toISOString().split('T')[0],
+                time: time,
+                details: '{}',
+                plus: "0",
+                customer_id: customerId,
+                optional_makeup_id: '',
+                hair_stylist_id: '',
+                process_id: '',
+                employee_id: '',
+                is_tst: false,
+                payment_type_id: '',
+                downpayment: "0",
+                remaining_payment: 0
+            }
+        )
+    }, [selectedDepartment]);
 
 
     const resetForm = () => {
