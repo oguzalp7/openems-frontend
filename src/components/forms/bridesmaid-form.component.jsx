@@ -12,7 +12,24 @@ import { generateFormConfig, alterFormConfigType, findFieldIndex, renameColumn, 
 
 const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
     const {user} = useContext(AuthContext);
+    
     const [selectedBranch, setSelectedBranch] = useState(initialBranch);
+
+    useEffect(() => {
+        const fetchEvent = async () => {
+            try {
+                const response = await apiClient.get(`/event/${recordId}`)
+                setSelectedBranch(response.data.branch_id)
+            } catch (error) {
+                console.error(error.response.data.detail)
+            }
+        }
+        if(!initialBranch && user && user.branch_id){
+            setSelectedBranch(user.branch_id);
+        }else{
+            fetchEvent();
+        }
+    }, [user, initialBranch]);
 
     // schema state
     const [schema, setSchema] = useState(null);

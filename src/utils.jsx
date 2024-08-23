@@ -90,6 +90,7 @@ export const hideKeysInArrayOfObjects = (array, keysToHide) => {
   
   
 export const generateFormConfig = (schema) => {
+  console.log(schema)
   if(schema){
     return Object.keys(schema.properties).map((key) => {
       const field = schema.properties[key];

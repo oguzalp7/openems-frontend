@@ -155,13 +155,15 @@ useEffect(() => {
 
   // load dropdown options
   useEffect(() => {
-      const branchDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'branch_id');
-      if(updatedFormConfig && updatedFormConfig[branchDropdownIndex] && updatedFormConfig[branchDropdownIndex].options){
-          if(typeof(updatedFormConfig[branchDropdownIndex].options) === typeof(branches)){
-              updatedFormConfig[branchDropdownIndex].options = branches;
-          }
+      if(branches){
+        const branchDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'branch_id');
+        if(updatedFormConfig && updatedFormConfig[branchDropdownIndex] && updatedFormConfig[branchDropdownIndex].options){
+            if(typeof(updatedFormConfig[branchDropdownIndex].options) === typeof(branches)){
+                updatedFormConfig[branchDropdownIndex].options = branches;
+            }
+        }
       }
-  }, [branches]);
+  }, [user, branches, formConfig]);
   
   useEffect(() => {
       const departmentDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'department_id');
@@ -171,7 +173,7 @@ useEffect(() => {
               updatedFormConfig[departmentDropdownIndex].options = departments;
           }
       }
-  }, [departments]);
+  }, [user, departments, formConfig]);
 
   useEffect(() => {
       const authDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'auth_id');
@@ -181,7 +183,7 @@ useEffect(() => {
               updatedFormConfig[authDropdownIndex].options = auths;
           }
       }
-  }, [auths]);
+  }, [user, auths, formConfig]);
 
   useEffect(() => {
       const empoymentTypeDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'employment_type_id');
@@ -191,7 +193,7 @@ useEffect(() => {
               updatedFormConfig[empoymentTypeDropdownIndex].options = employmentTypes;
           }
       }
-  }, [employmentTypes]);
+  }, [user, employmentTypes, formConfig]);
 
   const labelMapping = {
       "Username": 'KULLANICI ADI',

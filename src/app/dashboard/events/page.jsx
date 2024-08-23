@@ -387,7 +387,7 @@ const Events = () => {
     {
       label: 'GELİN+',
       colorScheme: 'purple',
-      newContent: <BridesMaidForm recordId={recordId} selectedBranch={selectedBranch} selectedDate={date}/>,
+      newContent: <BridesMaidForm recordId={recordId} initialBranch={selectedBranch} selectedDate={date}/>,
       disabled: selectedDepartment === '' || !(selectedDepartment === '1') || row['İŞLEM'] === 'GELİN+' || !(row['GELİN+'] > 0)
     },
   ];
