@@ -42,7 +42,16 @@ const Events = () => {
     if(user && user.branch_id){
       setSelectedBranch(user.branch_id);
     }
+
+    if(user && user.department){
+      if(user.department < 4){
+        setSelectedDepartment(user.department)
+      }
+    }
+    
   }, [user]);
+
+  
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);

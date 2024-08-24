@@ -78,15 +78,17 @@ const BranchForm = () => {
         'is_franchise': true,
         'studio_extra_guest_price': 0,
         'hotel_extra_guest_price': 0,
-        'outside_extra_guest_price': 0
+        'outside_extra_guest_price': 0,
+        'outside_country_extra_guest_price': 0,
     }
 
     const labelMapping = {
         'Name': 'ADI',
         'Is Franchise': 'FRANCHISE',
-        'Studio Extra Guest Price': 'STÜDYO EXTRA MÜŞTERİ ÜCRETİ',
-        'Hotel Extra Guest Price': 'OTEL EXTRA MÜŞTERİ ÜCRETİ',
-        'Outside Extra Guest Price': 'DIŞARI EXTRA MÜŞTERİ ÜCRETİ'
+        'Studio Extra Guest Price': 'STÜDYO GELİN+',
+        'Hotel Extra Guest Price': 'OTEL GELİN+ ',
+        'Outside Extra Guest Price': 'ŞEHİRDIŞI GELİN+',
+        'Outside Country Extra Guest Price': 'YURTDIŞI GELİN+'
       };
      let updatedFormConfig = renameFormLabels(formConfig, labelMapping);
     
