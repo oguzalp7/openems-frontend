@@ -42,16 +42,17 @@ const Events = () => {
     if(user && user.branch_id){
       setSelectedBranch(user.branch_id);
     }
+    
+  }, [user, user.branch_id]);
 
+  useEffect(() => {
     if(user && user.department){
       if(user.department < 4){
         setSelectedDepartment(user.department)
       }
     }
-    
-  }, [user]);
 
-  
+  }, [user, user.department]);
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
@@ -111,7 +112,7 @@ const Events = () => {
     fetchSessionAndConfigure()
   }, [user]);
 
-  console.log(selectedDepartment)
+  
 
   // fetch dropdown data for department
   useEffect(() => {
@@ -246,7 +247,6 @@ const Events = () => {
 
   }, [selectedDepartment, selectedBranch, date, selectedEmployee]);
   
-  console.log(url)
 
   const handleSelectDate = (selectedDate) => {
     setDate(selectedDate);
@@ -342,12 +342,19 @@ const Events = () => {
   }, [url, isModalOpen, modalContent])
   
   const resetFilters = () => {
-    setSelectedBranch("")
-    setSelectedDepartment("")
-    setSelectedEmployee("")
+    if(user && user.auth_level){
+      if(user.auth_level >= 5){
+        setSelectedBranch("")
+      }
+      if(user.auth_level >=4){
+        setSelectedDepartment("")
+        setSelectedEmployee("")
+      }
+    }
     setDate(new Date().toISOString().split('T')[0])
   }
-
+  console.log(selectedDepartment)
+  console.log(url)
   // define button callbacks
   const handleUpdate = (rowData) => {
     //console.log(rowData);
