@@ -120,7 +120,7 @@ const EventForm = () => {
             setShowDepartments(true);
         }
     }, [user, user.auth_level]);
-
+    
     useEffect(() => {
         const fetchDepartmentsByBranch = async () => {
             try {
@@ -138,19 +138,19 @@ const EventForm = () => {
     const handleDepartmentSelect = (selectedId) => {
         setSelectedDepartment(selectedId);
     };
+
+    
     
     // set department if necessary
     useEffect(() => {
-        if(user && user.department && user.aut_level <= 4){
-            if(user.department > 3){
-                // if(departments && departments[0]){
-                //     setSelectedDepartment(departments[0].id);
-                // }
-            }else{
-                setSelectedDepartment(user.department);
-            }
+        if(user && user.department && user.auth_level < 4){
+            setSelectedDepartment(user.department)
         }
-    },[user])
+    },[user, user.department])
+
+    console.log(selectedDepartment)
+
+    
 
     useEffect(() => {
         if(selectedDepartment){
@@ -615,16 +615,6 @@ const EventForm = () => {
 
         // Set the details object in the filtered form data
         filteredFormData.details = details;
-
-        
-
-        // const session = await getPlainSession();
-        // const requestOptions = {
-        //         headers: {
-        //             "Content-Type": "application/json",
-        //             Authorization: `Bearer ${session.token}`,
-        //         },
-        //     }
         
 
         const response = await apiClient.post('/event/rp/', filteredFormData)
@@ -691,7 +681,7 @@ const EventForm = () => {
             }
         )
     }
-
+    
     return(
         <Box>
             <VStack>
