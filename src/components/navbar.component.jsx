@@ -20,7 +20,7 @@ const Navbar =  () => {
                         <Image src="https://muberyasaglam.com.tr/minimages/saat.png" alt="events"/>
                     </Link>
 
-                    <Link href={'/dashboard/settings'}>
+                    <Link href={'/dashboard/ms'}>
                         <Image src="https://muberyasaglam.com.tr/minimages/ms.png" alt="settings"/>
                     </Link>
 

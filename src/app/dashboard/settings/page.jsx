@@ -15,7 +15,7 @@ import ProcessPrice from './high-order-components/process-price';
 const OtherTabContent = () => {
     return(
         <Box >
-            <Branch/>
+            YAKINDA.
             
         </Box>
     );
@@ -38,24 +38,28 @@ const Settings = () => {
                 <Tab flexShrink={0}>FİYATLAR</Tab>
                 <Tab flexShrink={0}>PERSONEL EKLE</Tab>
                 <Tab flexShrink={0}>ŞİFRE DEĞİŞTİR</Tab>
+                <Tab flexShrink={0}>ŞUBELER</Tab>
                 <Tab flexShrink={0}>DİĞER</Tab>
             </TabList>
 
             <TabPanels>
                 <TabPanel>
-                {selectedTab === 0 && <Employees/>}
+                    {selectedTab === 0 && <Employees/>}
                 </TabPanel>
                 <TabPanel>
-                {selectedTab === 1 && <ProcessPrice/>}
+                    {selectedTab === 1 && <ProcessPrice/>}
                 </TabPanel>
                 <TabPanel>
-                {selectedTab === 2 && <UserEmployee/>}
+                    {selectedTab === 2 && <UserEmployee/>}
                 </TabPanel>
                 <TabPanel>
-                {selectedTab === 3 && <ChangePasswordForm/>}
+                    {selectedTab === 3 && <ChangePasswordForm/>}
                 </TabPanel>
                 <TabPanel>
-                    {selectedTab === 4 && <OtherTabContent />}
+                    {selectedTab === 4 && <Branch/>}
+                </TabPanel>
+                <TabPanel>
+                    {selectedTab === 5 && <OtherTabContent/>}
                 </TabPanel>
             </TabPanels>
         </Tabs>

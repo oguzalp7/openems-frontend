@@ -73,14 +73,14 @@ const ChangePasswordForm = () => {
         <Box as="form" onSubmit={handleSubmit}>
         <VStack spacing={4}>
             <PasswordInput
-            label={"eski şifre"}
+            label={"ESKİ ŞİFRE"}
             placeholder={"Eski Şifrenizi Girin"}
             name="password"
             value={formValues.password}
             onChange={handleChange}
             />
             <PasswordInput
-            label={"yeni şifre"}
+            label={"YENİ ŞİFRE"}
             placeholder={"Yeni Şifrenizi Girin"}
             name="new_password"
             value={formValues.new_password}
