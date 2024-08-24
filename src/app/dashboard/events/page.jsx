@@ -43,7 +43,7 @@ const Events = () => {
       setSelectedBranch(user.branch_id);
     }
     
-  }, [user, user.branch_id]);
+  }, [user]);
 
   useEffect(() => {
     if(user && user.department){
@@ -52,7 +52,7 @@ const Events = () => {
       }
     }
 
-  }, [user, user.department]);
+  }, [user]);
 
   // datepicker state management
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
