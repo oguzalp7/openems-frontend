@@ -40,6 +40,7 @@ const ProcessPriceDataTable = ({data, showButtons, customButtons = []}) => {
         h={['sm', 'md',  'auto']}
         p={[0, 8, 0, 0]}
         //marginLeft={[-90, -50, -100]}
+        maxHeight={"70vh"}
         overflowX={'auto'}
         overflowY={'auto'}
         >

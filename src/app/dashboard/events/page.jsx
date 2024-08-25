@@ -388,7 +388,8 @@ const Events = () => {
     console.log('delete will not be implemented.');
     
     const originalRowData = originalData.find((data) => data.SIRA === rowData.SIRA);
-    const response = await apiClient.delete(`/event/${originalRowData.id}`, requestOptions)
+    const response = await apiClient.delete(`/event/${originalRowData.id}`)
+    handleCloseModal();
   }
   
   // define buttons
