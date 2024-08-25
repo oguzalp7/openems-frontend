@@ -46,7 +46,7 @@ const Analysis = () => {
     const [chartData, setChartData] = useState([])
     const [tableData, setTableData] = useState([])
 
-    console.log(chartDataFetchURL)
+    //console.log(chartDataFetchURL)
 
     const handleSelectStartDate = (selectedDate) => {
         setSelectedStartDate(selectedDate);

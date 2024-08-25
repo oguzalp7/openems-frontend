@@ -10,13 +10,12 @@ import ChangePasswordForm from '@/components/change-password-form.component';
 import UserEmployee from '@/components/forms/user-employee-form.component';
 import ProcessPrice from './high-order-components/process-price';
 
-
+import EventStatements from './high-order-components/event-statements';
 
 const OtherTabContent = () => {
     return(
         <Box >
-            YAKINDA.
-            
+            <EventStatements/>
         </Box>
     );
 }
@@ -39,7 +38,7 @@ const Settings = () => {
                 <Tab flexShrink={0}>PERSONEL EKLE</Tab>
                 <Tab flexShrink={0}>ŞİFRE DEĞİŞTİR</Tab>
                 <Tab flexShrink={0}>ŞUBELER</Tab>
-                <Tab flexShrink={0}>DİĞER</Tab>
+                <Tab flexShrink={0}>MUHASEBE</Tab>
             </TabList>
 
             <TabPanels>
@@ -59,7 +58,7 @@ const Settings = () => {
                     {selectedTab === 4 && <Branch/>}
                 </TabPanel>
                 <TabPanel>
-                    {selectedTab === 5 && <OtherTabContent/>}
+                    {selectedTab === 5 && <EventStatements/>}
                 </TabPanel>
             </TabPanels>
         </Tabs>
