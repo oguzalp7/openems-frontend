@@ -166,6 +166,8 @@ const Analysis = () => {
         fetchTableData();
     }, [user, tableDataFetchURL]);
 
+    console.log(chartData);
+
     return (
         <ProtectedRoute>
             
