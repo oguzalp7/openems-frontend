@@ -39,8 +39,18 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
     const [validationSchema, setValidationSchema] = useState(yup.object().shape({}));
     const [formConfig, setFormConfig] = useState([]);
 
-    const [employees, setEmployees] = useState([]);
+    // create event details schema from pydantic schema
+    const [detailsSchema, setDetailsSchema] = useState(null);
+    const [detailsValidationSchema, setDetailsValidationSchema] = useState(yup.object().shape({}));
+    const [detailsFormConfig, setDetailsFormConfig] = useState([]);
 
+
+    const [employees, setEmployees] = useState([]);
+    const [hairStylists, setHairStylists] = useState([]);
+
+    // final form config
+    const [combinedFormConfig, setCombinedFormConfig] = useState([]);
+    const [combinedValidationSchema, setCombinedValidationSchema] = useState(yup.object().shape({}));
     // toast hook
     const toast = useToast();
 
@@ -93,7 +103,54 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
 
             setValidationSchema(yupSchema);
         }
-    }, [schema]);
+    }, [detailsSchema]);
+
+    
+
+    // fetch schema
+    useEffect(() => {   
+        const fetchDetailsSchema = async () => {
+        
+            try {
+                const response = await apiClient.get('/event/schema/bridesmaid');
+                setDetailsSchema(response.data);
+              } catch (error) {
+                setError(error);
+              } finally {
+                setLoading(false);
+              }
+        }
+        fetchDetailsSchema();
+    }, [user])
+
+    // validate schema
+    useEffect(() => {
+        if (detailsSchema) {
+            const config = generateFormConfig(detailsSchema);
+            setDetailsFormConfig(config);
+
+            // Convert the schema to Yup schema for validation
+            const yupSchema = yup.object().shape(
+                Object.keys(schema.properties).reduce((acc, key) => {
+                    const field = schema.properties[key];
+                    if (field.type === 'string' && field.minLength) {
+                    acc[key] = yup.string().min(field.minLength).required();
+                    } else if (field.type === 'integer') {
+                    acc[key] = yup.number().integer().required();
+                    } else if (field.type === 'boolean') {
+                    acc[key] = yup.boolean().required();
+                    } else if (field.type === 'number') {
+                    acc[key] = yup.number().required();
+                    } else {
+                    acc[key] = yup.string().required();
+                    }
+                    return acc;
+                }, {})
+            );
+
+            setValidationSchema(yupSchema);
+        }
+    }, [detailsSchema]);
 
     useEffect(() => {
         const fetchEmployees = async () => {
@@ -107,9 +164,37 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
         fetchEmployees();
     }, [user, selectedBranch]);
 
+    useEffect(() => {
+        const fetchHairStylists = async () => {
+          
+            try{
+              const response = await apiClient.get(`/employees/?b=${selectedBranch}&dep=2&active=true&skip=0&limit=100`);
+              setHairStylists(response.data)
+            }catch(e){  
+                setHairStylists([])
+            }
+          }
+        fetchHairStylists();
+    }, [user, selectedBranch]);
+
+    // combine two forms
+    useEffect(()=>{
+        const combinedForm = [...formConfig, ...detailsFormConfig]
+        setCombinedFormConfig(combinedForm);
+        
+    }, [formConfig, detailsFormConfig]);
+
+    // combine validation schemas
+    useEffect(() => {
+        const combinedSchema = validationSchema.concat(detailsValidationSchema);
+        setCombinedValidationSchema(combinedSchema);
+    }, [validationSchema, detailsValidationSchema]);
+
+    //console.log(combinedFormConfig)
+
     // keys which will not rendered on the form
     const keysToHidden = ['process_id', 'branch_id', 'status', 'description', 'details', 'date']
-    let updatedFormConfig = alterFormConfigType(formConfig, keysToHidden, 'hidden');
+    let updatedFormConfig = alterFormConfigType(combinedFormConfig, keysToHidden, 'hidden');
     
     const keysToTime = ['time']
     updatedFormConfig = alterFormConfigType(updatedFormConfig, keysToTime, 'time')
@@ -119,6 +204,12 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
     if(updatedFormConfig && updatedFormConfig[DropdownIndex] && updatedFormConfig[DropdownIndex].options){
         if(typeof(updatedFormConfig[DropdownIndex].options) === typeof(employees)){
              updatedFormConfig[DropdownIndex].options = employees;
+        }
+    }
+    const hairDropdownIndex = findFieldIndex(updatedFormConfig, 'select', 'hair_stylist_id');
+    if(updatedFormConfig && updatedFormConfig[hairDropdownIndex] && updatedFormConfig[hairDropdownIndex].options){
+        if(typeof(updatedFormConfig[DropdownIndex].options) === typeof(employees)){
+             updatedFormConfig[hairDropdownIndex].options = hairStylists;
         }
     }
  
@@ -136,7 +227,13 @@ const BridesMaidForm = ({recordId, initialBranch, selectedDate}) => {
     }
     
     const handleSubmit = async (data) => {
-        //console.log(data)
+        
+
+        // Create an object to hold the details
+        const details = {hair_stylist_id: data.hair_stylist_id};
+
+        data.details = details
+
         try {
             const response = await apiClient.post('/event/', data);
             //console.log('Event created:', response.data);
