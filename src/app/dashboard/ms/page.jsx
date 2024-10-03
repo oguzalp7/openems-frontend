@@ -207,14 +207,14 @@ const MSPage = () => {
         const fetchMonthlyData = async () => {
             let startDate = convertDateToTimestamp(`${selectedYear}-${selectedMonth}-01`)
             let endDate = convertDateToTimestamp(`${selectedYear}-${selectedMonth}-${new Date(selectedYear, selectedMonth, 0).getDate()}`)
-            let url = `/event/by-month/?start=${startDate}&end=${endDate}&dep=${selectedDepartment}&b=${selectedBranch}&eid=${selectedEmployee}&skip=0&limit=500`
-
+            //let url = `/event/by-month/?start=${startDate}&end=${endDate}&dep=${selectedDepartment}&b=${selectedBranch}&eid=${selectedEmployee}&skip=0&limit=500`
+            let url = `/event/by-month/?start=${startDate}&end=${endDate}&dep=${selectedDepartment}&eid=${selectedEmployee}&skip=0&limit=500`
             try {
                 const response = await apiClient.get(url)
                 // apply data processing
                 let processedData = response.data;
 
-                
+                console.log(processedData)
 
                 if(selectedDepartment === "1" || selectedDepartment === 1){
                     // re-format the phone number and country code.
@@ -225,7 +225,7 @@ const MSPage = () => {
                     processedData = renameColumn(processedData, 'ARTI+', 'GELİN+');
                     // define order of the cols
                     const order = [
-                        'TARİH', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'MAKEUP1', 'MAKEUP2', 'SAÇ',
+                        'TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'ŞUBE', 'İŞLEM', 'MAKEUP1', 'MAKEUP2', 'SAÇ',
                         'GELİN+', 'TST', 'ÜLKE', 'ŞEHİR', 'OTEL', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE', 'id'
                           
                       ];

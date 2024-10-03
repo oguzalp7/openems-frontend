@@ -58,11 +58,26 @@ const EventForm = () => {
 
     const [remainingPayment, setRemainingPayment] = useState(0);
 
+    const [fixedEmployee, setFixedEmployee] = useState({});
+
     // process time for current time
     let time = new Date().toISOString().split('T')[1].split('.')[0];
     time = time.substring(0, time.length - 3);
     const [baseDefaultValues, setBaseDefaultValues] = useState({})
 
+    useEffect(() => {
+        const fetchFixedEmployee = async () => {
+            try {
+                const response = await apiClient.get(`/employees/?b=12&dep=1&active=true&skip=0&limit=10`);
+                setFixedEmployee(response.data[0])
+            } catch (error) {
+                setFixedEmployee({})
+            }
+        }
+        fetchFixedEmployee();
+    }, []);
+
+    
     
     // configure branch dropdown
     useEffect(()=>{
@@ -148,7 +163,7 @@ const EventForm = () => {
         }
     },[user, user.department])
 
-    console.log(selectedDepartment)
+    
 
     
 
@@ -396,6 +411,7 @@ const EventForm = () => {
         }
     }
 
+    
    
     // keys which will not rendered on the form
     const keysToHidden = ['status', 'details', 'customer_id', 'branch_id']
@@ -591,6 +607,12 @@ const EventForm = () => {
             })
         }
     }
+
+    useEffect(() => {
+        if(selectedDepartment === '1' || selectedDepartment === 1){
+            employees.push(fixedEmployee)
+        }
+    }, [selectedDepartment, fixedEmployee, employees]);
 
     const handleFormChange = async (formData) => {
         
