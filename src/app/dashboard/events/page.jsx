@@ -353,8 +353,7 @@ const Events = () => {
     }
     setDate(new Date().toISOString().split('T')[0])
   }
-  console.log(selectedDepartment)
-  console.log(url)
+  
   // define button callbacks
   const handleUpdate = (rowData) => {
     //console.log(rowData);
@@ -477,6 +476,7 @@ const Events = () => {
     },
   ];
 
+ 
   
   return (
     <ProtectedRoute>

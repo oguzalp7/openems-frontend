@@ -2,18 +2,19 @@
 
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '@/context/AuthContext'
-import { Button, Checkbox, Input, InputGroup, InputLeftAddon, Select, Stack, VStack } from '@chakra-ui/react';
+import { Button, Checkbox, Input, InputGroup, InputLeftAddon, useToast, Select, Stack, VStack, Box, SimpleGrid, Text, ModalContent, HStack } from '@chakra-ui/react';
 import { validateAndCombineContact } from '@/utils';
 import Loading from '@/components/loading.component';
 import ChakraDataTable from '@/components/data-table.component';
 import ProtectedRoute from '@/components/protected-route.component';
 import { apiClient } from '@/apiClient';
 import UpdateModal from '@/components/update-modal.component';
+import CardComponent from '@/components/card.component';
 
 const Customers = () => {
 
     const {user} = useContext(AuthContext);
-
+    const toast = useToast();
     const [countryCodes, setCountryCodes] = useState([]);
     const [selectedCountryCode, setSelectedCountryCode] = useState('')
 
@@ -28,10 +29,14 @@ const Customers = () => {
     const [url, setURL] = useState('/customer/');
 
     const [recordId, setRecordId] = useState('');
-
+    const [row, setRow] = useState({})
     // modal related hooks
     const [isModalOpen, setIsModalOpen] = useState(false);
-    const [modalContent, setModalContent] = useState(null);
+    const [modalContent, setModalContent] = useState([]);
+
+    const [pastEvents, setPastEvents] = useState([]);
+    const [modalLoading, setModalLoading] = useState(true);
+    
 
     // configure fetch options
     useEffect(() => {
@@ -123,7 +128,7 @@ const Customers = () => {
 
 
     const handleUpdate = (rowData) => {
-        console.log(rowData);
+        
         // const originalRowData = originalData.find((data) => data.SIRA === rowData.SIRA);
         // if (originalRowData) {
         //     setRecordId(originalRowData.id);
@@ -132,27 +137,95 @@ const Customers = () => {
         // }
         //console.log(originalRowData);
         setRecordId(rowData.ID)
-        // setModalContent(rowData);
-        setIsModalOpen(true);
+        //setModalContent(rowData);
+        //setIsModalOpen(true);
+        setRow(rowData)
     };
     
     useEffect(() => {
         const fetchRecordById = async () => {
-        
+            setModalLoading(true);
             try{
                 if(recordId){
-                    const response = await apiClient.get(`/customer/${recordId}`);
-                    setModalContent(response.data)
-                    //setRecordId('')
+                    const response = await apiClient.get(`/customer/history/${recordId}`);
+                    setModalContent(response.data);
+                    //console.log(response.data)
                 }
+                
+                
             }catch(error){
                 console.error('Error fetching record:', error);
-                setModalContent(null)
+                setModalContent([])
                 setRecordId('')
+            }finally{
+                setModalLoading(false);
             }
+            
+            //setModalContent(pastEventsData)
         }
+        toast.closeAll();
         fetchRecordById();
-    }, [user, recordId]);
+    }, [isModalOpen, recordId]);
+    
+    
+    
+    useEffect(() => {
+        modalContent.map((event, index) => {
+            
+            // toast({
+            //         title: `${row['ADI']}`,
+            //         description: `
+            //                     TARİH: ${event['TARİH']}\n
+            //                     ŞUBE: ${event['ŞUBE']}\n
+            //                     İŞLEM: ${event['İŞLEM']}\n
+            //                     PERSONEL: ${event['PERSONEL']}\n
+            //         `,
+            //         duration: 9000,
+            //         isClosable: true,
+            // })
+            toast({
+                position: 'bottom-right',
+                isClosable: true,
+                render: () => (
+                  <Box 
+                    borderWidth="1px"
+                    borderRadius="lg"
+                    overflow="hidden"
+                    boxShadow="md"
+                    p={4}
+                    _hover={{ boxShadow: 'lg', transform: 'scale(1.02)' }}
+                    transition="0.2s"
+                    w={'full'}
+                    bg={'blue.300'}
+                    color={'black'}
+                  >
+                    <VStack spacing={2} align="start">
+                        <Text fontWeight="bold" fontSize="lg">{row['ADI'].toUpperCase()}</Text>
+                        <HStack>
+                            <Text fontWeight="bold" fontSize="md" >TARİH:</Text>
+                            <Text> {event['TARİH']}</Text>
+                        </HStack>
+                        <HStack>
+                            <Text fontWeight="bold" fontSize="md" >İŞLEM:</Text>
+                            <Text> {event['İŞLEM']}</Text>
+                        </HStack>
+                        <HStack>
+                            <Text fontWeight="bold" fontSize="md" >ŞUBE:</Text>
+                            <Text> {event['ŞUBE']}</Text>
+                        </HStack>
+                        <HStack>
+                            <Text fontWeight="bold" fontSize="md" >PERSONEL:</Text>
+                            <Text> {event['PERSONEL']}</Text>
+                        </HStack>
+                    </VStack>
+                  </Box>
+                ),
+            })
+            
+        })
+    }, [modalContent, row]);
+
+    
 
     const handleDelete = async (rowData) => {
         /* const originalRowData = originalData.find((data) => data.SIRA === rowData.SIRA);
@@ -195,8 +268,9 @@ const Customers = () => {
 
     const handleCloseModal = () => {
         setIsModalOpen(false);
-        setModalContent(null);
-        setRecordId('')
+        setModalContent([]);
+        setRecordId('');
+        setRow({});
     };
 
     const actionButtons = [
@@ -207,7 +281,9 @@ const Customers = () => {
           onClick: handleCloseModal,
         },
       ];
-
+    
+    
+    
     return (
         <ProtectedRoute>
             <VStack>
@@ -249,24 +325,44 @@ const Customers = () => {
                     <Button background={'transparent'} onClick={resetFilters}>RESET</Button>
                 </Stack>
                 {data ? (
-                    <ChakraDataTable  obj={data} title={'MÜŞTERİLER'} showButtons={true} customButtons={customButtons} />
+                    <ChakraDataTable  obj={data} title={'MÜŞTERİLER'} showButtons={false} customButtons={customButtons} />
                 ):(
                     <Loading/>
                 )}
-                {/* {isModalOpen && modalContent && recordId && (
+                {isModalOpen && pastEvents && recordId && (
                     <UpdateModal
                         isClosed={!isModalOpen}
                         //contentButtons={contentButtons}
                         actionButtons={actionButtons}
                         onClose={handleCloseModal}
-                    >
-                    {JSON.stringify(modalContent, null, 2)}
-                    
+                    >   
+                        
+                        
+                    {/* {modalContent ? (
+                        //  <ChakraDataTable  obj={pastEvents} title={'RANDEVU GEÇMİŞİ'} showButtons={false} customButtons={[]}/>
+                        // <Text>RANDEVU GEÇMİŞİ</Text>
+                        <SimpleGrid columns={[1, 2, 3]} spacing={6}>
+                            {modalContent.map((event, index) => (
+                            <div key={index}>event</div>
+                            ))}
+                            
+                        </SimpleGrid>
+                    ) : (
+                        <Loading/>
+                    )} */}
+
+                    {/* {modalContent.map((event, index) => {
+                        <div>{JSON.stringify(event, null, 2)}</div>
+                    })} */}
+
+                    <div>{modalContent.length}</div>
+
                     </UpdateModal>
-                )} */}
+                )}
                 </VStack>
         </ProtectedRoute>
     )
 }
 
 export default Customers;
+
