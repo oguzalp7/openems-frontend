@@ -30,6 +30,20 @@ const EventUpdateForm = ({ onSubmit, defaultValues, eventId }) => {
     const [employeesHair, setEmployeesHair] = useState([]);
     const [selectedDepartment, setSelectedDepartment] = useState('');
 
+    const [fixedEmployee, setFixedEmployee] = useState({});
+
+    useEffect(() => {
+        const fetchFixedEmployee = async () => {
+            try {
+                const response = await apiClient.get(`/employees/?b=12&dep=1&active=true&skip=0&limit=10`);
+                setFixedEmployee(response.data[0])
+            } catch (error) {
+                setFixedEmployee({})
+            }
+        }
+        fetchFixedEmployee();
+    }, []);
+
     // Fetch schemas by event_id
     useEffect(() => {
         const fetchSchema = async () => {
@@ -170,6 +184,11 @@ const EventUpdateForm = ({ onSubmit, defaultValues, eventId }) => {
         //}
     }, [user, selectedBranch, selectedDepartment]);
     
+    useEffect(() => {
+        if(selectedDepartment === '1' || selectedDepartment === 1){
+            employees.push(fixedEmployee)
+        }
+    }, [selectedDepartment, fixedEmployee, employees]);
 
     useEffect(() => {
         const fetchHairStylists = async () => {

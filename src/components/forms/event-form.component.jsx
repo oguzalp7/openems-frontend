@@ -203,6 +203,7 @@ const EventForm = () => {
 
     }, [selectedBranch, selectedDepartment, customerId]);
 
+    
     // fetch base schema
     useEffect(() => {
         const fetchBaseSchema = async () => {

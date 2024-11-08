@@ -3,11 +3,14 @@
 import React, { useEffect, useState, useContext } from 'react'
 import AuthContext from '@/context/AuthContext'
 import { apiClient } from '@/apiClient'
-import { Box, Text, useToast } from '@chakra-ui/react';
+import { Box, Text, useToast, HStack, Button, Divider } from '@chakra-ui/react';
 import * as yup from 'yup';
 import { generateFormConfig, alterFormConfigType, findFieldIndex, renameFormLabels } from '@/utils';
 import Loading from '../loading.component';
 import AdvancedDynamicForm from '../advanced-dynamic-form.component';
+import EmployeeDayOffForm from './employee-dayoff-form.component';
+import EmployeeMeetingForm from './employee-meeting-form.component';
+
 
 const UserEmployeeUpdateForm = ({initialValues, recordId, submitHandler}) => {
     const {user} = useContext(AuthContext);
@@ -38,6 +41,10 @@ const UserEmployeeUpdateForm = ({initialValues, recordId, submitHandler}) => {
 
     // toast hook
     const toast = useToast();
+
+    const [showForm, setShowForm] = useState(true);
+    const [showDayOff, setShowDayOff] = useState(false);
+    const [showMeeting, setShowMeeting] = useState(false);
 
     // ------------------------------------------------------------------------------------------------------------------------------------------------
     // fetch dropdown options
@@ -212,13 +219,65 @@ const UserEmployeeUpdateForm = ({initialValues, recordId, submitHandler}) => {
         
         submitHandler(data)
     }
+
+    const handleDayOff = async () => {
+        setShowForm(false);
+        setShowDayOff(true);
+        setShowMeeting(false);
+        //console.log(recordId);
+    }
+
+    const handleMeeting = async () => {
+        setShowForm(false);
+        setShowDayOff(false);
+        setShowMeeting(true);
+        //console.log(recordId);
+    }
+
+
+    const handleShowForm = async () => {
+        setShowForm(true);
+    }
+
+    console.log(defaultValues)
+
     return(
         <Box>
             {/* check auth & render dynamic form */}
-            {user && user.auth_level >= 5 ? (
+            {user && user.auth_level >= 4 ? (
                     <>
                     {branches && auths && departments && employmentTypes ? (
-                        <AdvancedDynamicForm  formConfig={updatedFormConfig} onSubmit={onSubmit} defaultValues={defaultValues} onFormChange={(data) => {console.log(data)}}/>
+                        <Box>
+                            <HStack w={'full'}>
+                                
+                                
+                                {!showForm ? (
+                                    <Box w={'full'}>
+                                        <Button w={'full'} colorScheme={'orange'} onClick={handleShowForm}>GERİ</Button>
+                                        
+                                    </Box>
+                                ): (
+                                    <>
+                                    <Button colorScheme={'teal'} w={'full'} onClick={handleDayOff}>İZİN</Button>
+                                    <Button colorScheme={'blue'} w={'full'} onClick={handleMeeting}>TOPLANTI</Button>
+                                    </>
+                                )}
+                            </HStack>
+                            <br/>
+                            {showForm ? (
+                                <AdvancedDynamicForm  formConfig={updatedFormConfig} onSubmit={onSubmit} defaultValues={defaultValues} onFormChange={(data) => {console.log(data)}}/>
+                            ):(
+                                <>
+                                {showDayOff && (
+                                    <EmployeeDayOffForm employeeId={recordId} branchId={defaultValues.branch_id}/>
+                                )}
+                                {showMeeting && (
+                                    <EmployeeMeetingForm employeeId={recordId} branchId={defaultValues.branch_id}/>
+                                )}
+                                </>
+                                
+                            )}
+                        </Box>
                     ):(
                         <Loading/>
                     )}
