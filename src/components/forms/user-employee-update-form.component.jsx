@@ -239,7 +239,21 @@ const UserEmployeeUpdateForm = ({initialValues, recordId, submitHandler}) => {
         setShowForm(true);
     }
 
-    console.log(defaultValues)
+    const handleResetPassword = async () => {
+        
+        try {
+            const response = await apiClient.get(`/user/password/reset/${recordId}`)
+            console.log(response.data)
+        } catch (error) {
+            toast({
+                title: 'Şifre resetlenemedi.',
+                description: error.response.data.detail,
+                status: 'error',
+                //duration: 9000,
+                isClosable: true,
+            })
+        }
+    }
 
     return(
         <Box>
@@ -260,6 +274,7 @@ const UserEmployeeUpdateForm = ({initialValues, recordId, submitHandler}) => {
                                     <>
                                     <Button colorScheme={'teal'} w={'full'} onClick={handleDayOff}>İZİN</Button>
                                     <Button colorScheme={'blue'} w={'full'} onClick={handleMeeting}>TOPLANTI</Button>
+                                    <Button colorScheme={'purple'} w={'full'} onClick={handleResetPassword}>ŞİFRE RESETLE</Button>
                                     </>
                                 )}
                             </HStack>

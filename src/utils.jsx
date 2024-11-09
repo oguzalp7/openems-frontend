@@ -235,3 +235,36 @@ export const normalizeData = (data) => {
 export const excludeItem = (data, key, value) => {
   return data.filter(item => item[key] !== value);
 };
+
+// Utility function to reformat dates in a JSON array
+export function reformatDates(dataArray, dateKey, format = "dd-mm-YYYY") {
+  return dataArray.map(item => {
+    const dateValue = item[dateKey];
+    
+    if (!dateValue) return item; // Skip if dateKey is missing or empty
+
+    // Destructure the date string assuming it's in "YYYY-mm-dd" format
+    const [year, month, day] = dateValue.split("-");
+    
+    // Format the date based on the specified format
+    let formattedDate;
+    switch (format) {
+      case "dd-mm-YYYY":
+        formattedDate = `${day}.${month}.${year}`;
+        break;
+      case "mm-dd-YYYY":
+        formattedDate = `${month}.${day}.${year}`;
+        break;
+      case "YYYY-mm-dd":
+        formattedDate = `${year}.${month}.${day}`;
+        break;
+      default:
+        formattedDate = dateValue; // Default to the original date format if unknown
+    }
+
+    return {
+      ...item,
+      [dateKey]: formattedDate
+    };
+  });
+}

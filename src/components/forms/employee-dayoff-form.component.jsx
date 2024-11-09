@@ -1,12 +1,16 @@
 "use client"
 
 import React, {useState, useEffect, useContext} from 'react'
-import { Box, Text, useToast } from '@chakra-ui/react'
+import { Box, Text, useToast, FormControl, FormLabel, Input, FormErrorMessage, HStack, VStack } from '@chakra-ui/react'
 import * as yup from 'yup';
 import { apiClient } from '@/apiClient';
 import AuthContext from '@/context/AuthContext';
 import AdvancedDynamicForm from '../advanced-dynamic-form.component';
 import { generateFormConfig, alterFormConfigType, renameFormLabels } from '@/utils';
+
+
+import { addDays, format, parseISO } from 'date-fns';
+
 
 const EmployeeDayOffForm = ({employeeId, branchId}) => {
     const {user} = useContext(AuthContext);
@@ -21,6 +25,8 @@ const EmployeeDayOffForm = ({employeeId, branchId}) => {
 
     // toast hook
     const toast = useToast();
+
+    const [days, setDays] = useState(1);
 
     
     const defaultValues = {
@@ -80,9 +86,33 @@ const EmployeeDayOffForm = ({employeeId, branchId}) => {
 
     
     const handleSubmit = async (data) => {
-        //console.log(data)
+        // console.log(data.date) // variable that holds start date.
+        // console.log(days) // number of days that we're going to iterate through.
+
+        // Parse the start date to ensure correct date handling
+        const startDate = parseISO(data.date);
+
+        // Generate a list of dates, each incremented by one day from the start date
+        const dayOffDates = Array.from({ length: days }, (_, index) => addDays(startDate, index));
+
+        console.log(dayOffDates)
         try {
-            const response = await apiClient.post('/event/', data);
+
+            // Iterate over each date and make an API request for each
+            const requests = dayOffDates.map((date) => {
+                // Format each date as "YYYY-MM-DD"
+                const formattedDate = format(date, 'yyyy-MM-dd');
+                
+                // Set the formatted date in the data payload
+                const requestData = { ...data, date: formattedDate };
+
+                // Make API request
+                return apiClient.post('/event/', requestData);
+            });
+
+            // Wait for all requests to complete
+            await Promise.all(requests);
+            //const response = await apiClient.post('/event/', data);
             //console.log('Event created:', response.data);
             
             toast({
@@ -109,6 +139,7 @@ const EmployeeDayOffForm = ({employeeId, branchId}) => {
 
     const handleFormChange = (values) => {
         //console.log(values)
+
     }
 
     // keys which will not rendered on the form
@@ -116,9 +147,23 @@ const EmployeeDayOffForm = ({employeeId, branchId}) => {
     let updatedFormConfig = alterFormConfigType(formConfig, keysToHidden, 'hidden');
     const labelMapping = {'Date': 'TARİH', 'Description': 'AÇIKLAMA'}
     updatedFormConfig = renameFormLabels(updatedFormConfig, labelMapping);
-
+    console.log(days);
     return (
+        <>
+        <HStack align="start">
+            <VStack align="start">
+                <FormLabel>
+                    <Text  as="b">{'GÜN'.toUpperCase()}:</Text>
+                </FormLabel>
+                </VStack>
+                <VStack w={['full']}  align="start">
+                <Input type='number' value={days} onChange={(e) => {setDays(e.target.value)}} />
+                
+            </VStack>
+        </HStack>
+        <br/>
         <AdvancedDynamicForm formConfig={updatedFormConfig} onSubmit={handleSubmit} onFormChange={handleFormChange} defaultValues={defaultValues}/>
+        </>
     )
 }
 

@@ -66,7 +66,7 @@ const ChakraDataTable = ({title,  obj, showButtons, customButtons = []}) => {
     <Table 
     variant='striped' 
     colorScheme='blue' 
-    size={['md']}  
+    size={['sm', 'md', 'sm']}  
     w={['full']}
     //overflowX={'auto'}
     //overflowY={'auto'}

@@ -121,6 +121,8 @@ const BaseHOC = ({form, slug, tableTitle, fetchUrl, updateForm }) => {
  
     }
 
+  
+
     return (
         <Box
         w={['sm', 'md', 'lg', '8xl']}
@@ -142,6 +144,7 @@ const BaseHOC = ({form, slug, tableTitle, fetchUrl, updateForm }) => {
                 <Loading/>
             )}
             
+           
 
             {isModalOpen && modalContent && user && user.auth_level > 4 && (
                 <UpdateModal

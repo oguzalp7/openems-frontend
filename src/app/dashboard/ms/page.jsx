@@ -24,7 +24,7 @@ import {
 
 import InsertModal from '@/components/insert-modal.component'
 import Calendar from '@/components/calendar.component'
-import { convertDateToTimestamp, renameColumn, reorderColumns, validateAndCombineContact, normalizeData, removeKeysFromArrayOfObjects } from '@/utils'
+import { convertDateToTimestamp, renameColumn, reorderColumns, validateAndCombineContact, normalizeData, removeKeysFromArrayOfObjects, reformatDates } from '@/utils'
 import ChakraDataTable from '@/components/data-table.component'
 import PaymentForm from '@/components/forms/payment-form.component'
 import BridesMaidForm from '@/components/forms/bridesmaid-form.component'
@@ -223,6 +223,8 @@ const MSPage = () => {
                     // re-name necessary columns
                     processedData = renameColumn(processedData, 'PERSONEL', 'MAKEUP1');
                     processedData = renameColumn(processedData, 'ARTI+', 'GELİN+');
+                    processedData = reformatDates(processedData, 'TARİH', 'dd-mm-YYYY');
+                    
                     // define order of the cols
                     const order = [
                         'TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'ŞUBE', 'İŞLEM', 'MAKEUP1', 'MAKEUP2', 'SAÇ',
