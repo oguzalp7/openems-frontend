@@ -35,13 +35,13 @@ const ProcessPrice = () => {
 
   useEffect(() => {
     const fetchBranches = async () => {
-    try {
-        const response = await apiClient.get('/branch/?skip=0&limit=20');
-        setBranches(response.data);
-    } catch (error) {
-        console.error('Error fetching branches:', error);
-        setBranches([]);
-    }
+        try {
+            const response = await apiClient.get('/branch/?skip=0&limit=20');
+            setBranches(response.data);
+        } catch (error) {
+            console.error('Error fetching branches:', error);
+            setBranches([]);
+        }
     };
     
     fetchBranches();

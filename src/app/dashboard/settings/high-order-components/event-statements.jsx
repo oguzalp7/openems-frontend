@@ -161,8 +161,7 @@ const EventStatements = () => {
           )
         ),
     ];
-    console.log(data)
-    console.log(overallTotal)
+    
     return (
         <Box>
             <VStack>

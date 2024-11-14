@@ -155,8 +155,8 @@ const EmployeeDayOffForm = ({employeeId, branchId}) => {
                 <FormLabel>
                     <Text  as="b">{'GÜN'.toUpperCase()}:</Text>
                 </FormLabel>
-                </VStack>
-                <VStack w={['full']}  align="start">
+            </VStack>
+            <VStack w={['full']}  align="start">
                 <Input type='number' value={days} onChange={(e) => {setDays(e.target.value)}} />
                 
             </VStack>

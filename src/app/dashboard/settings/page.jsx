@@ -11,6 +11,7 @@ import UserEmployee from '@/components/forms/user-employee-form.component';
 import ProcessPrice from './high-order-components/process-price';
 
 import EventStatements from './high-order-components/event-statements';
+import CertificatePage from './high-order-components/certificate';
 
 const OtherTabContent = () => {
     return(
@@ -39,6 +40,7 @@ const Settings = () => {
                 <Tab flexShrink={0}>ŞİFRE DEĞİŞTİR</Tab>
                 <Tab flexShrink={0}>ŞUBELER</Tab>
                 <Tab flexShrink={0}>MUHASEBE</Tab>
+                <Tab flexShrink={0}>SERTİFİKA</Tab>
             </TabList>
 
             <TabPanels>
@@ -59,6 +61,9 @@ const Settings = () => {
                 </TabPanel>
                 <TabPanel>
                     {selectedTab === 5 && <EventStatements/>}
+                </TabPanel>
+                <TabPanel>
+                    {selectedTab === 6 && <CertificatePage/>}
                 </TabPanel>
             </TabPanels>
         </Tabs>
