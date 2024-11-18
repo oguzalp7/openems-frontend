@@ -11,7 +11,7 @@ import UserEmployee from '@/components/forms/user-employee-form.component';
 import ProcessPrice from './high-order-components/process-price';
 
 import EventStatements from './high-order-components/event-statements';
-import CertificatePage from './high-order-components/certificate';
+import CertificateTab from './high-order-components/certificate';
 
 const OtherTabContent = () => {
     return(
@@ -63,7 +63,7 @@ const Settings = () => {
                     {selectedTab === 5 && <EventStatements/>}
                 </TabPanel>
                 <TabPanel>
-                    {selectedTab === 6 && <CertificatePage/>}
+                    {selectedTab === 6 && <CertificateTab/>}
                 </TabPanel>
             </TabPanels>
         </Tabs>
