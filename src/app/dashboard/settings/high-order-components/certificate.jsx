@@ -48,6 +48,13 @@ import { Textarea } from '@chakra-ui/react'
 const CertificateTab = () => {
     const {user} = useContext(AuthContext);
 
+    console.log(user)
+    if(user.auth_level < 5) {
+        return (
+            <Text>Bu içeriği görüntülemeye görüntüleyemezsiniz.</Text>
+        );
+    }
+
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
 
     const [branches, setBranches] = useState([]);
