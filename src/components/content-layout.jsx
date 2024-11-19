@@ -1,9 +1,11 @@
+"use client"
+
 import { Box, Flex } from '@chakra-ui/react';
 
 
 const Layout = ({ children }) => {
   return (
-    <Flex  direction="column" maxHeight="100vh">
+    <Flex  direction="column" maxHeight="200vh">
       
       {/* Content Section */}
       <Flex as="main" flex="1" justify="center" align="center" p={4} w={['md-2px', 'full']}>

@@ -4,10 +4,12 @@ import { useToast, Button, Stack } from "@chakra-ui/react"
 import PwaModal from "@/components/pwa-modal"
 
 import { apiClient } from "@/apiClient"
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
+import ProtectedRoute from "@/components/protected-route.component";
 
 
-export default function Home() {
+
+export default function CommercialPage() {
   const[res, setRes] = useState("");
 
   useEffect(() => {
@@ -18,9 +20,23 @@ export default function Home() {
     }
     checkAPI();
   }, []);
+
+  const handleLogin = () => {
+    Router.push('/login')
+  }
   
   //const toast = useToast()
   return (
-    <>Home</>
+    <>
+    {res ? (
+      <ProtectedRoute>
+        Reklam Alanı - Logged In
+      </ProtectedRoute>
+    ) : (
+      <>
+        Reklam Alanı
+      </>
+    )}
+    </>
   )
 }

@@ -1,9 +1,12 @@
 
 import { Providers } from "./providers";
 import { AuthProvider } from "@/context/AuthContext";
+import { LanguageProvider } from "@/context/LanguageContaxt";
+
+
 export const metadata = {
-  title: "MS-Randevu",
-  description: "Müberya Sağlam Pro. Make-up Studio",
+  title: "PulseFlow - LV",
+  description: "La Vittoria PulseFlow IoT Platform",
   manifest: "/manifest.json", 
 };
 
@@ -12,9 +15,11 @@ export default function RootLayout({children}) {
     <html lang="en">
       <body suppressHydrationWarning>
         <Providers>
+          <LanguageProvider>
             <AuthProvider>
               {children}
             </AuthProvider>
+          </LanguageProvider>
         </Providers>
       </body>
     </html>

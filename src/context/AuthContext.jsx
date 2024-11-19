@@ -12,6 +12,7 @@ export const AuthProvider = ({children}) => {
     const [user, setUser] = useState(null);
     const router = useRouter();
     const toast = useToast();
+
     const login = async (username, password) => {
         const data = new URLSearchParams();
         data.append("grant_type", "");
@@ -24,11 +25,11 @@ export const AuthProvider = ({children}) => {
             const response = await apiClient.post("/auth/token", data, {
                 headers: {'Content-Type': 'application/x-www-form-urlencoded'},
             });
-            
-            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
-            localStorage.setItem('token', response.data.token);
+            console.log(response.data)
+            apiClient.defaults.headers.common['Authorization'] = `Bearer ${response.data.access_token}`;
+            localStorage.setItem('token', response.data.access_token);
             setUser(response.data)
-            router.push('/dashboard/events')
+            router.push('/dashboard/home')
         } catch (error) {
             console.log(error)
             toast({
