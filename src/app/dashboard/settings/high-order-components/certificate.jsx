@@ -14,16 +14,10 @@ import '@/styles/fonts.css';
 
 import QRCode from 'qrcode';
 
-import {
-    Slider,
-    SliderTrack,
-    SliderFilledTrack,
-    SliderThumb,
-    SliderMark,
-} from '@chakra-ui/react'
 
-import { GrNext, GrPrevious, GrPrint, GrPowerReset, GrCircleQuestion  } from "react-icons/gr";
-import { encryptData } from '@/crypto-utils'
+
+import { GrNext, GrPrevious, GrPrint, GrCircleQuestion  } from "react-icons/gr";
+
 
 import { v4 as uuidv4 } from 'uuid';
 import html2canvas from 'html2canvas';
@@ -37,18 +31,17 @@ import {
     PopoverContent,
     PopoverHeader,
     PopoverBody,
-    PopoverFooter,
     PopoverArrow,
     PopoverCloseButton,
-    PopoverAnchor,
-    
 } from '@chakra-ui/react'
-import { Textarea } from '@chakra-ui/react'
+
+import { Textarea, useToast } from '@chakra-ui/react'
 
 const CertificateTab = () => {
     const {user} = useContext(AuthContext);
 
-    console.log(user)
+    const toast = useToast();
+
     if(user.auth_level < 5) {
         return (
             <Text>Bu içeriği görüntülemeye görüntüleyemezsiniz.</Text>
@@ -178,7 +171,37 @@ const CertificateTab = () => {
     }
 
     const handleSaveCertificate = async () => {
+        const data = {
+            uuid: uuid,
+            title: `${gender}${name}`,
+            text: `Has successfully completed the ${departmentMapping[selectedDepartment - 1]} training given by ${trainer} on ${monthMapping[new Date(selectedDate).getMonth() - 1]} ${new Date(selectedDate).getDate()} - ${new Date(selectedDate).getDate() + 1}, ${new Date(selectedDate).getFullYear()} and was entitled to receive this certificate.`,
+            contact: contact,
+            country_code: countryCode,
+            identification_number: identificationNumber,
+            date_of_birth: dateOfBirth,
+            address: address
+        }
 
+        const createCertRecord = async () => {
+            try {
+                const response = await apiClient.post('/certificates/', data);
+                toast({
+                    title: 'Sertifika Veritabanına İşlendi.',
+                    description: "İndirme işlemi başlatılıyor, lütfen indirme işlemi bitmeden sayfadan çıkmayınız.",
+                    status: 'success',
+                    isClosable: true,
+                  })
+            } catch (error) {
+                toast({
+                    title: 'Sertifika Oluşturulamadı.',
+                    description: error.response.data.detail,
+                    status: 'error',
+                    isClosable: true,
+                })
+            }
+        }
+
+        createCertRecord();
         
         const certificateElement = document.getElementById('certificate');
         const canvas = await html2canvas(certificateElement, {scale: 2});

@@ -5,7 +5,7 @@ import '@/styles/fonts.css';
 import { Box, Text, Image, IconButton, Stack } from '@chakra-ui/react'
 import { GrPrint  } from "react-icons/gr";
 
-const Certificate = ({left, title, text, uuid, onSave}) => {
+const Certificate = ({ title, text, uuid, qrCode, onSave}) => {
     const [fontSize, setFontSize] = useState(50); // Default font size
     const maxCharacters = 26;
 
@@ -37,6 +37,8 @@ const Certificate = ({left, title, text, uuid, onSave}) => {
             <Text noOfLines={2} fontFamily={'Gideon'}  position="absolute" transform={'translateY(10%)'} top={`${60 + parseInt((50 - fontSize)/2)}%`} left='10%' right="10%" fontSize="20px" fontWeight="bold" color="gray" paddingBottom={'5px'}>
                 {text}
             </Text>
+
+            <Image src={qrCode} alt="Scan To View The Certificate"  position={'absolute'} left={'10%'} bottom={'13%'} width={'70px'} height={'70px'}/>
 
             <Text  position="absolute" top="88%" left='5%' color={'gray.200'}>
                 Sertifika No: {uuid}
