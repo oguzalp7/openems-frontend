@@ -214,7 +214,7 @@ const MSPage = () => {
                 // apply data processing
                 let processedData = response.data;
 
-                console.log(processedData)
+                
 
                 if(selectedDepartment === "1" || selectedDepartment === 1){
                     // re-format the phone number and country code.
@@ -226,16 +226,12 @@ const MSPage = () => {
                     processedData = reformatDates(processedData, 'TARİH', 'dd-mm-YYYY');
                     
                     // define order of the cols
-                    const order = [
-                        'TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'ŞUBE', 'İŞLEM', 'MAKEUP1', 'MAKEUP2', 'SAÇ',
-                        'GELİN+', 'TST', 'ÜLKE', 'ŞEHİR', 'OTEL', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE', 'id'
-                          
-                      ];
+                    const order = [ 'TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'İŞLEM', 'ŞEHİR', 'OTEL', 'ŞUBE', 'MAKEUP1', 'MAKEUP2', 'SAÇ', 'GELİN+', 'TST', 'ÜLKE', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE', 'id'];
+                    //const order = ['TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'İŞLEM', 'ŞEHİR', 'OTEL', 'GELİN+','ŞUBE', 'id'];
                     processedData = reorderColumns(processedData, order);
                     
-                    const keysToRemove = ['ÜLKE', 'ŞEHİR', 'OTEL', 'KAPORA', 'ÖDEME TİPİ']
-          
-                    processedData = removeKeysFromArrayOfObjects(processedData, keysToRemove)
+                    const keysToRemove = ['ÜLKE', 'MAKEUP1', 'MAKEUP2', 'SAÇ', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE'];
+                    processedData = removeKeysFromArrayOfObjects(processedData, keysToRemove);
           
                   }else if(selectedDepartment === "2" || selectedDepartment === 2){
                     // re-format the phone number and country code.
