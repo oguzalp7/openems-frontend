@@ -230,16 +230,18 @@ const MSPage = () => {
                     //const order = ['TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'İŞLEM', 'ŞEHİR', 'OTEL', 'GELİN+','ŞUBE', 'id'];
                     processedData = reorderColumns(processedData, order);
                     
-                    const keysToRemove = ['ÜLKE', 'MAKEUP1', 'MAKEUP2', 'SAÇ', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE'];
+                    const keysToRemove = ['ÜLKE', 'SAAT', 'MAKEUP1', 'MAKEUP2', 'SAÇ', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE'];
                     processedData = removeKeysFromArrayOfObjects(processedData, keysToRemove);
-          
+
+                    const newOrder = ['TARİH', 'SAAT', 'AD-SOYAD', 'telefon', 'İŞLEM', 'ŞEHİR', 'OTEL', 'GELİN+', 'TST', 'ŞUBE', 'id']
+                    processedData = reorderColumns(processedData, newOrder);
                   }else if(selectedDepartment === "2" || selectedDepartment === 2){
                     // re-format the phone number and country code.
                     processedData = validateAndCombineContact(processedData, 'TELEFON', 'ÜLKE KODU');
           
                     // define order of the cols
                     const order = [
-                       'SIRA', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'PERSONEL', "TST",
+                       'SIRA', 'AD-SOYAD', 'telefon',  'İŞLEM', 'PERSONEL', "TST",
                        'BAKİYE'
                     ];
           
