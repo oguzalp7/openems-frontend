@@ -384,20 +384,20 @@ const Events = () => {
   }, [recordId]);
 
   const handleDelete = async (rowData) => {
-    console.log('delete will not be implemented.');
-    // try {
-    //   const originalRowData = originalData.find((data) => data.SIRA === rowData.SIRA);
-    //   const response = await apiClient.delete(`/event/${originalRowData.id}`)
-    //   toast({
-    //     title: 'Randevu Silindi.',
-    //     description: "Sayfayı yenileyiniz.",
-    //     status: 'error',
-    //     //duration: 9000,
-    //     isClosable: true,
-    //   })
-    // } catch (error) {
-    //   console.error(error)
-    // }
+    // console.log('delete will not be implemented.');
+    try {
+      const originalRowData = originalData.find((data) => data.SIRA === rowData.SIRA);
+      const response = await apiClient.delete(`/event/${originalRowData.id}`)
+      toast({
+        title: 'Randevu Silindi.',
+        description: "Sayfayı yenileyiniz.",
+        status: 'error',
+        //duration: 9000,
+        isClosable: true,
+      })
+    } catch (error) {
+      console.error(error)
+    }
     
     
   }

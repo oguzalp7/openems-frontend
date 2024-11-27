@@ -171,7 +171,7 @@ const Analysis = () => {
     return (
         <ProtectedRoute>
             
-                <VStack w={['sm', 'full']}>
+                <VStack w={['sm', 'full']} maxH={'100vh'} overflow={'auto'}>
                     <Accordion defaultIndex={[0]} allowToggle>
                         <AccordionItem>
                             <h2>
