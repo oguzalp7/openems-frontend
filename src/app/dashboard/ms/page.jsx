@@ -41,10 +41,10 @@ const MSPage = () => {
     const [selectedDepartment, setSelectedDepartment] = useState("1");
     // dropdown configuration
     const [branches, setBranches] = useState([]);
-    const [selectedBranch, setSelectedBranch] = useState('');
+    const [selectedBranch, setSelectedBranch] = useState('12');
 
     const [employees, setEmployees] = useState([]);
-    const [selectedEmployee, setSelectedEmployee] = useState("");
+    const [selectedEmployee, setSelectedEmployee] = useState("66");
 
     const currentDate = new Date().toISOString().split('T')[0];
 
