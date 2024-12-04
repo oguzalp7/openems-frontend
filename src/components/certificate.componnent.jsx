@@ -23,10 +23,10 @@ const Certificate = ({ title, text, uuid, qrCode, onSave}) => {
     }, [title]);
 
     return (
-        <Stack align={'center'}>
+        <Stack align={'center'} >
         <IconButton w={'sm'} fontSize={'30px'}  onClick={onSave} aria-label='Sertifika oluştur'><GrPrint color='white'/></IconButton>
-        <Box id='certificate' w={'4xl'} position="relative"  margin="auto" mt={10} textAlign={'center'}>
-            <Image src={'../cert-images/ms-cert-template.png'} alt="Certificate Template" boxSize="100%" objectFit="cover" />
+        <Box id='certificate' w={'4xl'} position="relative"  margin="auto" mt={10} textAlign={'center'}  >
+            <Image src={'../cert-images/ms-cert-template.png'} alt="Certificate Template" boxSize={["100%"]} objectFit="cover" overflow={'auto'}/>
             
             {/* Overlay text for each field, styled and positioned on the certificate */}
             

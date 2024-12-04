@@ -49,6 +49,8 @@ const CertificateTab = () => {
     }
 
     const [selectedDate, setSelectedDate] = useState(new Date().toISOString().split('T')[0]);
+    //const [dateAfterSelectedDate, setDateAfterSelectedDate] = useState(new Date(selectedDate) + 1);
+    
 
     const [branches, setBranches] = useState([]);
     const [selectedBranch, setSelectedBranch] = useState(12);
@@ -201,7 +203,7 @@ const CertificateTab = () => {
             }
         }
 
-        createCertRecord();
+        //createCertRecord();
         
         const certificateElement = document.getElementById('certificate');
         const canvas = await html2canvas(certificateElement, {scale: 2});
@@ -222,6 +224,11 @@ const CertificateTab = () => {
 
         setUuid(uuidv4())        
     }
+
+    var selectedTestDate = new Date(selectedDate);
+    //console.log(selectedTestDate)
+    selectedTestDate.setDate(selectedTestDate.getDate() + 1);
+    console.log(selectedTestDate.toISOString().split('T')[0])
 
     
     return (
@@ -352,7 +359,7 @@ const CertificateTab = () => {
             </Text>
 
             <Text noOfLines={3} fontFamily={'Gideon'}  position="absolute" transform={'translateY(10%)'} top={`${60 + parseInt((50 - fontSize)/2)}%`} left={'10%'} right={'10%'} fontSize="18px" fontWeight="bold" color="gray" paddingBottom={'5px'}>
-                {`Has successfully completed the ${departmentMapping[selectedDepartment - 1]} training given by ${trainer} on ${monthMapping[new Date(selectedDate).getMonth() - 1]} ${new Date(selectedDate).getDate()} - ${new Date(selectedDate).getDate() + 1}, ${new Date(selectedDate).getFullYear()} and was entitled to receive this certificate.`}
+                {`Has successfully completed the ${departmentMapping[selectedDepartment - 1]} training given by ${trainer} on ${monthMapping[new Date(selectedDate).getMonth()]} ${new Date(selectedDate).getDate()} - ${monthMapping[new Date(selectedTestDate.toISOString().split('T')[0]).getMonth()]} ${new Date(selectedTestDate.toISOString().split('T')[0]).getDate()}, ${new Date(selectedDate).getFullYear()} and was entitled to receive this certificate.`}
             </Text>
 
             <Image src={qrCode} alt="Scan To View The Certificate"  position={'absolute'} left={'10%'} bottom={'13%'} width={'70px'} height={'70px'}/>
