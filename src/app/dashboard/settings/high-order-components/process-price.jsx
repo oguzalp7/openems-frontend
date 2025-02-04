@@ -5,12 +5,13 @@ import ChakraDropdown from '@/components/dropdown.component'
 import { apiClient } from '@/apiClient'
 import Loading from '@/components/loading.component'
 
-import { Box, HStack, VStack, useToast } from '@chakra-ui/react'
+import { Box, HStack, VStack, useToast, Button } from '@chakra-ui/react'
 
 import UpdateModal from '@/components/update-modal.component'
 import DynamicPriceForm from '@/components/forms/dynamic-price-form.component'
 import AuthContext from '@/context/AuthContext'
-
+import InsertModal from '@/components/insert-modal.component'
+import DiscountDepartmentForm from '@/components/forms/discount-department-form.component'
 
 const ProcessPrice = () => {
   const {user} = useContext(AuthContext);
@@ -176,6 +177,29 @@ const ProcessPrice = () => {
     }  
   }
 
+  const handleDepartmentDiscount =  async (data) => {
+    console.log(data);
+    const url = `/discounts/by-attr?d=${data.dep}`;
+    try {
+        const response = await apiClient.post(url, data.payload);
+        toast({
+            title: 'İndirim başarıyla eklendi.',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
+        setIsModalOpen(false);
+    }
+    catch (error) { 
+        toast({
+            title: 'İndirim eklenemedi.',
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
+    }
+  }
+
   return (
     <Box 
         // w={['full', 'full']} 
@@ -189,6 +213,10 @@ const ProcessPrice = () => {
     >
       <VStack>
           <HStack>
+                    {user && user.auth_level > 4 && (<InsertModal buttonTitle="İNDİRİM" >
+                            <DiscountDepartmentForm onSubmit={handleDepartmentDiscount} />
+                        </InsertModal>
+                    )}
                     {user && branches ? (
                         <ChakraDropdown
                         options={branches}
@@ -217,6 +245,9 @@ const ProcessPrice = () => {
                         }
                         </>
                     )}
+                    {user && selectedBranch && selectedDepartment && user.auth_level <= 4 && (<InsertModal buttonTitle="İNDİRİM" >
+                        şube bazlı bazlı departman filtrelemeli
+                    </InsertModal>)}
                     
           </HStack>
           {data && !loading ? (

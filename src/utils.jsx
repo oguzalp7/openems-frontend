@@ -268,3 +268,34 @@ export function reformatDates(dataArray, dateKey, format = "dd-mm-YYYY") {
     };
   });
 }
+
+export const generateDateRange = (startDate, endDate) => {
+  const dates = [];
+  let currentDate = new Date(startDate);
+  const end = new Date(endDate);
+  while (currentDate <= end) {
+    dates.push(currentDate.toISOString().split('T')[0]);
+    currentDate.setDate(currentDate.getDate() + 1);
+  }
+  return dates;
+};
+
+export const processReports = (data, startDate, endDate) => {
+  const columns = ["KAPORA", "NİŞAN", "DIŞ ÇEKİM", "KINA", "GELİN", "GELİN +", "ÖZEL GÜN", "EĞİTİM1"];
+  const dates = generateDateRange(startDate, endDate);
+  //console.log(data);
+  return dates.map(date => {
+    const details = data[date] || {};
+    const expandedDetails = {};
+
+    columns.forEach(column => {
+      expandedDetails[column] = {
+        "NAKİT": details[column]?.NAKİT || 0,
+        "VISA": details[column]?.VISA || 0
+      };
+    });
+
+    return [date.toString(), expandedDetails];
+  });
+  //return data;
+};

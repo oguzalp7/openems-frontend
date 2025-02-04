@@ -27,9 +27,9 @@ const Analysis = () => {
     // Calculate the first day of the year
     const currentYear = new Date().toISOString().split('T')[0].split("-")[0]
     const firstDayOfYear = `${currentYear}-01-01`
-
+    const lastDayOfYear = `${currentYear}-12-31`;
     const [selectedStartDate, setSelectedStartDate] = useState(firstDayOfYear);
-    const [selectedEndDate, setSelectedEndDate] = useState(new Date().toISOString().split('T')[0]);
+    const [selectedEndDate, setSelectedEndDate] = useState(lastDayOfYear);
 
     const [branches, setBranches] = useState([]);
     const [selectedBranch, setSelectedBranch] = useState('');

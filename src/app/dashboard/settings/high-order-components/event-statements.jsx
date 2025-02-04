@@ -9,12 +9,13 @@ import AuthContext from '@/context/AuthContext'
 
 import DatePicker from '@/components/date-picker.component'
 import ChakraDropdown from '@/components/dropdown.component'
-import { convertDateToTimestamp } from '@/utils'
+import { convertDateToTimestamp, generateDateRange, processReports } from '@/utils'
 import { Box, VStack, Stack } from '@chakra-ui/react'
 
 import { Table, Thead, Tbody, Tr, Th, Td, Button, Text, TableContainer } from '@chakra-ui/react';
 
 import exportExcel from '@/exportExcel'
+
 
 const EventStatements = () => {
 
@@ -40,7 +41,10 @@ const EventStatements = () => {
     const [data, setData] = useState([]);
     const [overallTotal, setOverallTotal] = useState({});
     const [fetchUrl, setFetchUrl] = useState(`/payments/reports/?start=${convertDateToTimestamp(selectedStartDate)}&end=${convertDateToTimestamp(selectedEndDate)}`)
+    const [dates, setDates] = useState(generateDateRange(selectedStartDate, selectedEndDate));
 
+    const [mockData, setMockData] = useState([]);
+   
     useEffect(() => {
         if(user && user.auth_level >= 4 && user.branch_id){
             setSelectedBranch(user.branch_id);
@@ -116,7 +120,8 @@ const EventStatements = () => {
 
             setOverallTotal(fetchedData["OVERALL_TOTAL"]);
             delete fetchedData["OVERALL_TOTAL"];
-            
+            setMockData(fetchedData);
+            //console.log(fetchedData);
             setData(Object.entries(fetchedData)); // Convert the data object to an array of key-value pairs
             } catch (error) {
                 console.error(error)
@@ -126,31 +131,20 @@ const EventStatements = () => {
         fetchData();
     }, [user, fetchUrl]);
 
-    // const categories = {};
-    // let overallTotals = {};
+    // useEffect(() => { 
+    //     setDates(generateDateRange(selectedStartDate, selectedEndDate));
+    // }, [selectedStartDate, selectedEndDate]);
+    
+    // useEffect(() => {
+    //     if (mockData.length === 0) return;
+        
+    //     const processedData = processReports(mockData, selectedStartDate, selectedEndDate);
+    //     setMockData(Object.entries(processedData));
+    // },[fetchUrl, selectedStartDate, selectedEndDate]);
 
-    // data.forEach((entry) => {
-    //     const date = Object.keys(entry)[0];
-    //     const details = entry[date];
-
-    //     if (date === "OVERALL_TOTAL") {
-    //     overallTotals = details;
-    //     return;
-    //     }
-
-    //     Object.keys(details).forEach((category) => {
-    //     if (!categories[category] && category !== 'TOPLAM') {
-    //         categories[category] = new Set();
-    //     }
-    //     if (category !== 'TOPLAM') {
-    //         Object.keys(details[category]).forEach((paymentType) => {
-    //         categories[category].add(paymentType);
-    //         });
-    //     }
-    //     });
-    // });
-
-    // const sortedCategories = Object.keys(categories).sort();
+    console.log(data);
+    //console.log(mockData);
+    
 
     const sortedCategories = [
         ...new Set(
@@ -161,6 +155,8 @@ const EventStatements = () => {
           )
         ),
     ];
+
+    // console.log(sortedCategories);
     
     return (
         <Box>
@@ -319,3 +315,11 @@ const EventStatements = () => {
 }
 
 export default EventStatements
+
+
+/*
+KAPORA, NİŞAN, DIŞ ÇEKİM, KINA, GELİN, GELİN +, ÖZEL GÜN, EĞİTİM1	
+															
+
+															
+*/
