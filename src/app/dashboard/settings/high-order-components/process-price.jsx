@@ -12,6 +12,10 @@ import DynamicPriceForm from '@/components/forms/dynamic-price-form.component'
 import AuthContext from '@/context/AuthContext'
 import InsertModal from '@/components/insert-modal.component'
 import DiscountDepartmentForm from '@/components/forms/discount-department-form.component'
+import IndividualDiscountForm from '@/components/forms/discount-individiual-form.component'
+
+import { Tabs, TabList, TabPanels, Tab, TabPanel } from '@chakra-ui/react'
+
 
 const ProcessPrice = () => {
   const {user} = useContext(AuthContext);
@@ -178,8 +182,8 @@ const ProcessPrice = () => {
   }
 
   const handleDepartmentDiscount =  async (data) => {
-    console.log(data);
-    const url = `/discounts/by-attr?d=${data.dep}`;
+    //console.log(data.payload);
+    const url = `/discounts/by-attr?d=${data.dep}${data.branch ? `&b=${data.branch}` : ''}`;
     try {
         const response = await apiClient.post(url, data.payload);
         toast({
@@ -200,6 +204,31 @@ const ProcessPrice = () => {
     }
   }
 
+  const handleIndividualDiscount = async (data) => {
+    console.log(data);
+   
+
+    try {
+        const response = await apiClient.post("/discounts/", data);
+        toast({
+            title: 'İndirim başarıyla eklendi.',
+            status: 'success',
+            duration: 9000,
+            isClosable: true,
+        })
+        setIsModalOpen(false);
+    }
+    catch (error) { 
+        toast({
+            title: 'İndirim eklenemedi.',
+            status: 'error',
+            duration: 9000,
+            isClosable: true,
+        })
+    }
+
+  }
+
   return (
     <Box 
         // w={['full', 'full']} 
@@ -217,6 +246,7 @@ const ProcessPrice = () => {
                             <DiscountDepartmentForm onSubmit={handleDepartmentDiscount} />
                         </InsertModal>
                     )}
+
                     {user && branches ? (
                         <ChakraDropdown
                         options={branches}
@@ -245,9 +275,9 @@ const ProcessPrice = () => {
                         }
                         </>
                     )}
-                    {user && selectedBranch && selectedDepartment && user.auth_level <= 4 && (<InsertModal buttonTitle="İNDİRİM" >
+                    {/* {user && selectedBranch && selectedDepartment && user.auth_level <= 4 && (<InsertModal buttonTitle="İNDİRİM" >
                         şube bazlı bazlı departman filtrelemeli
-                    </InsertModal>)}
+                    </InsertModal>)} */}
                     
           </HStack>
           {data && !loading ? (
@@ -263,7 +293,26 @@ const ProcessPrice = () => {
               actionButtons={actionButtons}
               onClose={handleCloseModal}
               >
-                  <DynamicPriceForm data={modalContent} onSubmit={handleSubmit} />
+                <Tabs isFitted variant='enclosed-colored' colorScheme='blue'>
+                    <TabList mb='1em'>
+                        {user && user.auth_level >= 4 && (<Tab>+İNDİRİM</Tab>)}
+                        <Tab>FİYATLAR</Tab>
+                    </TabList>
+                    <TabPanels>
+                        
+                        {user && user.auth_level >= 4 &&
+                        <TabPanel>
+                            <IndividualDiscountForm data={modalContent} onSubmit={handleIndividualDiscount} />
+                        </TabPanel>
+                        }
+                        
+                        <TabPanel>
+                        <DynamicPriceForm data={modalContent} onSubmit={handleSubmit} />
+                        </TabPanel>
+                    </TabPanels>
+                    </Tabs>
+                
+                
               </UpdateModal>
           )}
             

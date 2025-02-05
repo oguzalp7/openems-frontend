@@ -60,10 +60,42 @@ const EventForm = () => {
 
     const [fixedEmployee, setFixedEmployee] = useState({});
 
+    const [discountCandidate, setDiscountCandidate] = useState(null);
+    const [discountResponse, setDiscountResponse] = useState([]);
+    const [discountTexts, setDiscountTexts] = useState('');
+    const [discountCandidateName, setDiscountCandidateName] = useState("");
+
     // process time for current time
     let time = new Date().toISOString().split('T')[1].split('.')[0];
     time = time.substring(0, time.length - 3);
     const [baseDefaultValues, setBaseDefaultValues] = useState({})
+
+    console.log(discountResponse);
+    useEffect(() => {
+        const fetchDiscount = async () => {
+            try {
+                const response = await apiClient.get(`/discounts/details/${discountCandidate}`);
+                setDiscountResponse(response.data);
+            } catch (error) {
+                setDiscountResponse([]);
+            }
+        }
+        if(discountCandidate){
+            fetchDiscount();
+        }
+    }, [discountCandidate]);
+
+    useEffect(() => {
+        if (discountResponse.length > 0) {
+            const texts = discountResponse.map(discount => {
+                return ` (${discount.processes.join(', ')}) işlemlerinde ${discount.start_date} ve ${discount.end_date} tarihleri arasında, %${discount.percentage} indirim mevcuttur.`;
+            });
+            setDiscountTexts(texts);
+            setDiscountCandidateName(discountResponse[0].employee_name);
+        }
+    }, [discountResponse]);
+
+    console.log(discountTexts);
 
     useEffect(() => {
         const fetchFixedEmployee = async () => {
@@ -616,6 +648,8 @@ const EventForm = () => {
     }, [selectedDepartment, fixedEmployee, employees]);
 
     const handleFormChange = async (formData) => {
+        //console.log(formData)
+        setDiscountCandidate(formData.employee_id);
         
         // Create an object to hold the details
         const details = {};
@@ -776,7 +810,16 @@ const EventForm = () => {
                     </HStack>
                     <br/>
                     <AdvancedDynamicForm formConfig={updatedFormConfig} onSubmit={handleSubmit} onFormChange={handleFormChange} defaultValues={baseDefaultValues}/>
-                    
+                    {discountResponse.length > 0 && (
+                        <Box mt={4} border={'1px solid'} p={2}>
+                            <Text fontWeight={'bold'}>{discountCandidateName} için geçerli;</Text>
+                            {discountTexts.map((text, index) => (
+                                <Box>
+                                    <Text  key={index}>* {text}</Text>
+                                </Box>
+                            ))}
+                        </Box>
+                    )}
                 </Box>
                 ) : (
                 <Box>

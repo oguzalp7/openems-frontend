@@ -7,64 +7,42 @@ import ChakraDropdown from '../dropdown.component';
 import AuthContext from '@/context/AuthContext';
 import { apiClient } from '@/apiClient';
 import DatePicker from '../date-picker.component';
-import { set } from 'date-fns';
 
-const DiscountDepartmentForm = ({ onSubmit, onCancel }) => {
-    
+const IndividualDiscountForm = ({data, onSubmit, onCancel }) => {
     const [percentage, setPercentage] = useState(0);
     const [startDate, setStartDate] = useState(new Date().toISOString().split('T')[0]);
     const [endDate, setEndDate] = useState(new Date().toISOString().split('T')[0]);
-
-    const [departments, setDepartments] = useState([]);
-    const [selectedDepartment, setSelectedDepartment] = useState('');
-
-    const [branches, setBranches] = useState([]);
-    const [selectedBranch, setSelectedBranch] = useState('');
 
     const [processes, setProcesses] = useState([]);
     const [buffer, setBuffer] = useState([]);
     const toast = useToast();
     const { user } = useContext(AuthContext);
+    const employeeId = data.id;
+    const employee = data.name;
+    //const processes = data.data;
+
+    
+    const [depId, setDepId] = useState('');
 
     useEffect(() => {
-        const fetchDepartments = async () => {
+        const fetchEmployee = async () => {
             try {
-                const response = await apiClient.get('/departments/advanced/?skip=0&limit=3');
-                setDepartments(response.data);
-                //setBranches(response.data.branches);
+                const response = await apiClient.get(`/employees/${employeeId}`);
+                setDepId(response.data.department_id);
             } catch (error) {
-                console.error('Error fetching departments:', error);
-                setDepartments([]);
-                //setBranches([]);
+                console.error('Error fetching employee:', error);
+                setDepId('');
             }
-        };
-
-        fetchDepartments();
+        }
+        fetchEmployee();
     }, [user]);
 
-    useEffect(() => { 
-        if (departments.length > 0) {
-            setSelectedDepartment(departments[0].id);
-        }
-    }, [departments]);
-
-    useEffect(() => {
-        if (departments.length > 0 && selectedDepartment) {
-            const selectedDep = departments.at(selectedDepartment - 1);
-            if (selectedDep) {
-                setBranches(selectedDep.branches);
-            }
-        }
-    }, [ selectedDepartment]);
-
-    
-    //console.log(departments.at(selectedDepartment - 1).branches);
-    
+    // console.log(data);
 
     useEffect(() => {
         const fetchProcesses = async () => {
             try {
-                const response = await apiClient.get(`/processes/light/${selectedDepartment}`); // Adjust the endpoint
+                const response = await apiClient.get(`/processes/light/${depId}`); // Adjust the endpoint
                 setProcesses(response.data);
             } catch (error) {
                 toast({
@@ -76,10 +54,11 @@ const DiscountDepartmentForm = ({ onSubmit, onCancel }) => {
                 });
             }
         };
-        if(selectedDepartment){
+        if(depId){
             fetchProcesses();
         }
-    }, [user, selectedDepartment]);
+        
+    }, [user, depId]);
 
     const handleAddToBuffer = (process) => {
         setBuffer([...buffer, process]);
@@ -91,27 +70,16 @@ const DiscountDepartmentForm = ({ onSubmit, onCancel }) => {
         setBuffer(buffer.filter(p => p.id !== process.id));
     };
 
-    
-
     const handleSubmit = (e) => {
         e.preventDefault();
-        const data = {payload: {start_date: startDate, end_date: endDate, percentage: percentage,  processes: "[" + buffer.map(p => p.id).toString() + "]" }, dep: selectedDepartment, branch: selectedBranch};
-        // const processIds = buffer.map(p => p.id);
+        const data = {start_date: startDate, end_date: endDate, percentage: percentage,  processes: "[" + buffer.map(p => p.id).toString() + "]", employee_id: employeeId};
         onSubmit(data);
     };
+
+    //console.log(processes);
     
-    
-    return (
-        <Box mt={10}>
-            <HStack w={'full'} mb={4}>
-                <Text fontSize="lg">*Departman:</Text>
-                <ChakraDropdown label="Departman" options={departments} value={selectedDepartment} onSelect={setSelectedDepartment} />
-            </HStack>
-            {branches && branches.length > 0 ? (<HStack w={'full'} mb={4}>
-                <Text fontSize="lg">Şube:</Text>
-                <ChakraDropdown label="Şube (Opsiyonel)" options={branches} value={selectedBranch} onSelect={setSelectedBranch} />
-            </HStack>) : <Spinner/>}
-            <Divider mt={5}/>
+    return(
+        <Box>
             <form onSubmit={handleSubmit}>
             <HStack w={'full'} mb={4}>
                 <Text fontSize="lg">Başlangıç Tarihi:</Text>
@@ -173,4 +141,4 @@ const DiscountDepartmentForm = ({ onSubmit, onCancel }) => {
     );
 }
 
-export default DiscountDepartmentForm;
+export default IndividualDiscountForm;
