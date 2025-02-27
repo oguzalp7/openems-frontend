@@ -13,31 +13,31 @@ const Navbar =  () => {
             <Flex  align='center'>
                 <Flex display={['flex', 'flex', 'flex', 'flex']}>
                     <Link href={'/dashboard/create-event'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/ekleme.png" alt="event"/>
+                        <Image src="./assets/ekleme.png" alt="event"/>
                     </Link>
 
                     <Link href={'/dashboard/events'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/saat.png" alt="events"/>
+                        <Image src="./assets/saat.png" alt="events"/>
                     </Link>
 
                     <Link href={'/dashboard/ms'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/ms.png" alt="settings"/>
+                        <Image src="./assets/ms.png" alt="settings"/>
                     </Link>
 
                     <Link href={'/dashboard/analysis'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/grafik.png" alt="analysis"/>
+                        <Image src="./assets/grafik.png" alt="analysis"/>
                     </Link>
 
                     <Link href={'/dashboard/customers'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/mercek.png" alt="customers"/>
+                        <Image src="./assets/mercek.png" alt="customers"/>
                     </Link>
 
                     <Link href={'/dashboard/settings'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/ayarlar.png" alt="settings"/>
+                        <Image src="./assets/ayarlar.png" alt="settings"/>
                     </Link>
 
                     <Link href={'/dashboard/logout'}>
-                        <Image src="https://muberyasaglam.com.tr/minimages/kapat.png" alt="logout"/>
+                        <Image src="./assets/kapat.png" alt="logout"/>
                     </Link>
                 </Flex>
             </Flex>
