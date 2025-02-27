@@ -13,32 +13,44 @@ const Navbar =  () => {
             <Flex  align='center'>
                 <Flex display={['flex', 'flex', 'flex', 'flex']}>
                     <Link href={'/dashboard/create-event'}>
-                        <Image src="./assets/ekleme.png" alt="event"/>
+
+                        <Image src="/assets/ekleme.png" alt="event"/>
                     </Link>
 
                     <Link href={'/dashboard/events'}>
-                        <Image src="./assets/saat.png" alt="events"/>
+                        <Image src="/assets/saat.png" alt="events"/>
                     </Link>
 
                     <Link href={'/dashboard/ms'}>
-                        <Image src="./assets/ms.png" alt="settings"/>
+                        <Image src="/assets/ms.png" alt="settings"/>
                     </Link>
 
                     <Link href={'/dashboard/analysis'}>
-                        <Image src="./assets/grafik.png" alt="analysis"/>
+                        <Image src="/assets/grafik.png" alt="analysis"/>
                     </Link>
 
                     <Link href={'/dashboard/customers'}>
-                        <Image src="./assets/mercek.png" alt="customers"/>
+                        <Image src="/assets/mercek.png" alt="customers"/>
                     </Link>
 
                     <Link href={'/dashboard/settings'}>
-                        <Image src="./assets/ayarlar.png" alt="settings"/>
+                        <Image src="/assets/ayarlar.png" alt="settings"/>
                     </Link>
 
-                    <Link href={'/dashboard/logout'}>
-                        <Image src="./assets/kapat.png" alt="logout"/>
-                    </Link>
+                    {/* <Link href={'/dashboard/logout'}>
+                        <Image src="/assets/kapat.png" alt="logout"/>
+                        <IconButton
+                            background="red"
+                            size='xl'
+                            aria-label="Toggle color mode"
+                            w={59}
+                            // h={52}
+                            onClick={toggleColorMode}
+                            icon={colorMode === "light" ? <MoonIcon/> : <SunIcon/>}
+                            border={'1px'}
+                            borderColor={"gray.700"}
+                        />
+                    </Link> */}
                 </Flex>
             </Flex>
             <IconButton
@@ -49,7 +61,6 @@ const Navbar =  () => {
                 onClick={toggleColorMode}
                 icon={colorMode === "light" ? <MoonIcon/> : <SunIcon/>}
                 border={'1px'}
-                //borderColor={"transparent"}
                 borderColor={"gray.700"}
             />
         </Flex>
