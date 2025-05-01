@@ -223,7 +223,14 @@ const Events = () => {
     const params = [];
     
     if (selectedDepartment) {
-      params.push(`dep=${selectedDepartment}`);
+      if(selectedDepartment === "2" || selectedDepartment === 2){
+        params.push(`dep=1`);
+      }else{
+        params.push(`dep=${selectedDepartment}`);
+      }
+      
+      
+      
     }
 
     if (selectedBranch) {
@@ -252,6 +259,7 @@ const Events = () => {
     setDate(selectedDate);
   }
 
+  
 
   // fetch table data
   useEffect(() => {
@@ -295,10 +303,10 @@ const Events = () => {
         }else if(selectedDepartment === "2" || selectedDepartment === 2){
           // re-format the phone number and country code.
           processedData = validateAndCombineContact(processedData, 'TELEFON', 'ÜLKE KODU');
-
+          
           // define order of the cols
           const order = [
-             'SIRA', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'PERSONEL', "TST",
+             'SIRA', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'PERSONEL', 'SAÇ', "TST",
              'BAKİYE'
           ];
 
