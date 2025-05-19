@@ -118,7 +118,7 @@ const Events = () => {
   useEffect(() => {
     const fetchDepartments = async () => {
       try {
-        const response = await apiClient.get('/departments/?skip=0&limit=3');
+        const response = await apiClient.get('/departments/?skip=0&limit=4');
         setDepartments(response.data);
       } catch (error) {
         setDepartments([])
@@ -290,13 +290,13 @@ const Events = () => {
           processedData = renameColumn(processedData, 'ARTI+', 'GELİN+');
           // define order of the cols
           const order = [
-              'SIRA', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'MAKEUP1', 'MAKEUP2', 'SAÇ',
+              'SIRA', 'SAAT', 'AD-SOYAD', 'telefon',  'İŞLEM', 'MAKEUP1',  'SAÇ',
               'GELİN+', 'TST', 'ÜLKE', 'ŞEHİR', 'OTEL', 'KAPORA', 'ÖDEME TİPİ', 'BAKİYE',
                 
             ];
           processedData = reorderColumns(processedData, order);
           
-          const keysToRemove = ['ÜLKE', 'ŞEHİR', 'OTEL', 'KAPORA', 'ÖDEME TİPİ']
+          const keysToRemove = ['ÜLKE', 'KAPORA', 'ÖDEME TİPİ', 'MAKEUP2']
 
           processedData = removeKeysFromArrayOfObjects(processedData, keysToRemove)
 

@@ -172,6 +172,16 @@ const EventForm = () => {
         const fetchDepartmentsByBranch = async () => {
             try {
                 const response = await apiClient.get(`/branch/offline/${selectedBranch}`);
+                // let deps = response.data.departments;
+                // const managementDepartment = {
+                //     id: 4,
+                //     name: 'YÖNETİM'
+                // };
+                // // Add management department if it doesn't exist
+                // if (!deps.some(dep => dep.id === managementDepartment.id)) {
+                //     deps.push(managementDepartment);
+                // }
+                
                 setDepartments(response.data.departments)
             } catch (error) {
                 setDepartments([{id: -1, name: 'fetch error'}])
@@ -181,6 +191,8 @@ const EventForm = () => {
             fetchDepartmentsByBranch();
         }
     }, [user, selectedBranch]);
+
+    // console.log(departments);
 
     const handleDepartmentSelect = (selectedId) => {
         setSelectedDepartment(selectedId);
@@ -284,28 +296,32 @@ const EventForm = () => {
     // Fetch and set options for process_id
     useEffect(() => {
         const updateOptions = async () => {
-        if (selectedDepartment) {
-            const response = await apiClient.get(`/processes/?dep=${selectedDepartment}&skip=0&limit=150`);
-            let excludedData = response.data
-            if(selectedDepartment === 3 || selectedDepartment === '3'){
-                excludedData = excludeItem(response.data, 'ADI', 'NAIL-ART')
-            }else if(selectedDepartment === 1 || selectedDepartment === '1'){
-                excludedData = excludeItem(response.data, 'ADI', 'GELİN+')
+            if (selectedDepartment) {
+                const response = await apiClient.get(`/processes/?dep=${selectedDepartment}&skip=0&limit=150`);
+                let excludedData = response.data
+                if(selectedDepartment === 3 || selectedDepartment === '3'){
+                    excludedData = excludeItem(response.data, 'ADI', 'NAIL-ART')
+                }else if(selectedDepartment === 1 || selectedDepartment === '1'){
+                    excludedData = excludeItem(response.data, 'ADI', 'GELİN+')
+                }
+                const management_processes_response = await apiClient.get(`/processes/?dep=4&skip=0&limit=5`);
+                const managementProcesses = management_processes_response.data;
+                // Add management processes to the options
+                excludedData = [...excludedData, ...managementProcesses];
+                
+                setBaseFormConfig((prevConfig) => {
+                const updatedConfig = [...prevConfig];
+                const ddIndex = findFieldIndex(updatedConfig, 'select', 'process_id');
+                if (ddIndex !== -1) {
+                    updatedConfig[ddIndex].options = excludedData;
+                }
+                return updatedConfig;
+                });
             }
-            
-            setBaseFormConfig((prevConfig) => {
-            const updatedConfig = [...prevConfig];
-            const ddIndex = findFieldIndex(updatedConfig, 'select', 'process_id');
-            if (ddIndex !== -1) {
-                updatedConfig[ddIndex].options = excludedData;
-            }
-            return updatedConfig;
-            });
-        }
         };
         updateOptions();
     }, [user, selectedDepartment]);
-
+    
     // Fetch and set options for employee_id
     useEffect(() => {
         const updateEmployeeOptions = async () => {

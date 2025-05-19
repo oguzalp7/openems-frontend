@@ -194,6 +194,7 @@ const CertificateTab = () => {
                     isClosable: true,
                   })
             } catch (error) {
+                console.error('Error creating certificate record:', error);
                 toast({
                     title: 'Sertifika Oluşturulamadı.',
                     description: error.response.data.detail,
@@ -203,7 +204,7 @@ const CertificateTab = () => {
             }
         }
 
-        //createCertRecord();
+        createCertRecord();
         
         const certificateElement = document.getElementById('certificate');
         const canvas = await html2canvas(certificateElement, {scale: 2});
@@ -228,7 +229,7 @@ const CertificateTab = () => {
     var selectedTestDate = new Date(selectedDate);
     //console.log(selectedTestDate)
     selectedTestDate.setDate(selectedTestDate.getDate() + 1);
-    console.log(selectedTestDate.toISOString().split('T')[0])
+    // console.log(selectedTestDate.toISOString().split('T')[0])
 
     
     return (
