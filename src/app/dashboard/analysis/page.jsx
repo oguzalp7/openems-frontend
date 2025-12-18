@@ -1,11 +1,11 @@
 "use client"
 
-import React, {useState, useEffect, useContext} from 'react'
+import React, { useState, useEffect, useContext } from 'react'
 import { apiClient } from '@/apiClient'
 import DatePicker from '@/components/date-picker.component'
 import ChakraDropdown from '@/components/dropdown.component'
 import Loading from '@/components/loading.component'
-import { Box, VStack, HStack, Stack } from '@chakra-ui/react'
+import { Box, VStack, HStack, Stack, Text } from '@chakra-ui/react'
 import { convertDateToTimestamp } from '@/utils'
 import BarChart from '@/components/chart-components/bar-chart.component'
 import AnalysisTable from '@/components/analysis-table.component'
@@ -22,7 +22,7 @@ import ProtectedRoute from '@/components/protected-route.component'
 import AuthContext from '@/context/AuthContext'
 
 const Analysis = () => {
-    const {user} = useContext(AuthContext);
+    const { user } = useContext(AuthContext);
 
     // Calculate the first day of the year
     const currentYear = new Date().toISOString().split('T')[0].split("-")[0]
@@ -38,13 +38,15 @@ const Analysis = () => {
     const [selectedDepartment, setSelectedDepartment] = useState('');
 
     const [employees, setEmployees] = useState([]);
-    const [selectedEmployee, setSelectedEmployee] = useState('');
+    const [selectedEmployee, setSelectedEmployee] = useState('66');
 
     const [chartDataFetchURL, setChartDataFetchURL] = useState(`/analysis/chart?start=${convertDateToTimestamp(selectedStartDate)}&end=${convertDateToTimestamp(selectedEndDate)}`);
     const [tableDataFetchURL, setTableDataFetchURL] = useState(`/analysis/table?start=${convertDateToTimestamp(selectedStartDate)}&end=${convertDateToTimestamp(selectedEndDate)}`);
 
     const [chartData, setChartData] = useState([])
     const [tableData, setTableData] = useState([])
+
+    const [total, setTotal] = useState(0);
 
     //console.log(chartDataFetchURL)
 
@@ -66,15 +68,15 @@ const Analysis = () => {
                 setBranches([]);
             }
         };
-        
+
         fetchBranches();
-        
+
     }, [user]);
 
-    
+
 
     const handleBranchSelect = (selectedId) => {
-        setSelectedBranch(selectedId);    
+        setSelectedBranch(selectedId);
     };
 
 
@@ -84,16 +86,16 @@ const Analysis = () => {
                 const response = await apiClient.get(`/branch/offline/${selectedBranch}`);
                 setDepartments(response.data.departments)
             } catch (error) {
-                setDepartments([{id: -1, name: 'fetch error'}])
+                setDepartments([{ id: -1, name: 'fetch error' }])
             }
         }
-        
-        if(selectedBranch){
+
+        if (selectedBranch) {
             fetchDepartmentsByBranch();
         }
-        
+
     }, [user, selectedBranch]);
-    
+
     const handleDepartmentSelect = (selectedId) => {
         setSelectedDepartment(selectedId);
     };
@@ -101,10 +103,10 @@ const Analysis = () => {
     useEffect(() => {
         const fetchEmployees = async () => {
             let url = `/employees/?active=true&skip=0&limit=100`
-            if(selectedBranch){
+            if (selectedBranch) {
                 url += `&b=${selectedBranch}`
             }
-            if(selectedDepartment){
+            if (selectedDepartment) {
                 url += `&dep=${selectedDepartment}`
             }
             try {
@@ -122,24 +124,38 @@ const Analysis = () => {
     }
 
     useEffect(() => {
-        if(!selectedBranch){
+
+        if (!selectedBranch) {
             setSelectedDepartment('')
-            if(!selectedDepartment){
+            if (!selectedDepartment) {
                 setSelectedEmployee('')
             }
         }
-    });
 
+    });
+    // console.log(selectedEmployee);
     useEffect(() => {
-        const newQueryParams = new URLSearchParams({
-            start: convertDateToTimestamp(selectedStartDate),
-            end: convertDateToTimestamp(selectedEndDate),
-            ...(selectedBranch && { b: selectedBranch }),
-            ...(selectedDepartment && { dep: selectedDepartment }),
-            ...(selectedEmployee && {eid: selectedEmployee}),
-        });
-        setChartDataFetchURL(`/analysis/chart?${newQueryParams.toString()}`);
-        setTableDataFetchURL(`/analysis/table?${newQueryParams.toString()}`);
+        if (selectedEmployee == "66" || selectedEmployee == 66) {
+            const newQueryParams = new URLSearchParams({
+                start: convertDateToTimestamp(selectedStartDate),
+                end: convertDateToTimestamp(selectedEndDate),
+                // ...(selectedBranch && { b: selectedBranch }),
+                // ...(selectedDepartment && { dep: selectedDepartment }),
+                ...(selectedEmployee && { eid: 66 }),
+            });
+            setChartDataFetchURL(`/analysis/chart?${newQueryParams.toString()}`);
+            setTableDataFetchURL(`/analysis/table?${newQueryParams.toString()}`);
+        } else {
+            const newQueryParams = new URLSearchParams({
+                start: convertDateToTimestamp(selectedStartDate),
+                end: convertDateToTimestamp(selectedEndDate),
+                ...(selectedBranch && { b: selectedBranch }),
+                ...(selectedDepartment && { dep: selectedDepartment }),
+                ...(selectedEmployee && { eid: selectedEmployee }),
+            });
+            setChartDataFetchURL(`/analysis/chart?${newQueryParams.toString()}`);
+            setTableDataFetchURL(`/analysis/table?${newQueryParams.toString()}`);
+        }
     }, [selectedStartDate, selectedEndDate, selectedBranch, selectedDepartment, selectedEmployee]);
 
     useEffect(() => {
@@ -166,33 +182,41 @@ const Analysis = () => {
         fetchTableData();
     }, [user, tableDataFetchURL]);
 
-    console.log(chartData);
+    // console.log(chartData);
+
+    useEffect(() => {
+        let t = 0
+        for (let i = 0; i < chartData.length; i++) {
+            t += chartData[i].data;
+        }
+        setTotal(t);
+    }, [chartData]);
 
     return (
         <ProtectedRoute>
-            
-                <VStack w={['sm', 'full']} maxH={'100vh'} overflow={'auto'}>
-                    <Accordion defaultIndex={[0]} allowToggle>
-                        <AccordionItem>
-                            <h2>
-                                <AccordionButton  _expanded={{ bg: 'lightblue', color: 'gray.900' }}>
+
+            <VStack w={['sm', 'full']} maxH={'100vh'} overflow={'auto'}>
+                <Accordion defaultIndex={[0]} allowToggle>
+                    <AccordionItem>
+                        <h2>
+                            <AccordionButton _expanded={{ bg: 'lightblue', color: 'gray.900' }}>
                                 <Box as='span' flex='1' textAlign='left'>
                                     FİLTRELE
                                 </Box>
                                 <AccordionIcon />
-                                </AccordionButton>
-                            </h2>
+                            </AccordionButton>
+                        </h2>
                         <AccordionPanel pb={4}>
                             <Stack flexDir={['column', 'row', 'row', 'row']}>
                                 {selectedStartDate ? (
-                                    <DatePicker selectedDate={selectedStartDate} onSelect={handleSelectStartDate}/>
-                                ):(
-                                    <Loading/>
+                                    <DatePicker selectedDate={selectedStartDate} onSelect={handleSelectStartDate} />
+                                ) : (
+                                    <Loading />
                                 )}
                                 {selectedEndDate ? (
-                                    <DatePicker selectedDate={selectedEndDate} onSelect={handleSelectEndDate}/>
-                                ):(
-                                    <Loading/>
+                                    <DatePicker selectedDate={selectedEndDate} onSelect={handleSelectEndDate} />
+                                ) : (
+                                    <Loading />
                                 )}
                                 {branches ? (
                                     <ChakraDropdown
@@ -202,13 +226,13 @@ const Analysis = () => {
                                         initialValue={""}
                                         onSelect={handleBranchSelect}
                                     />
-                                ):(
-                                    <Loading/>
+                                ) : (
+                                    <Loading />
                                 )}
 
                                 {selectedBranch && (
                                     <>
-                                        {departments ? ( 
+                                        {departments ? (
                                             <ChakraDropdown
                                                 options={departments}
                                                 label="TÜMÜ"
@@ -216,57 +240,58 @@ const Analysis = () => {
                                                 value={selectedDepartment}
                                                 onSelect={handleDepartmentSelect}
                                             />
-                                        ):(
-                                            <Loading/>
-                                        )} 
+                                        ) : (
+                                            <Loading />
+                                        )}
                                     </>
-                                )} 
-                                {selectedBranch  && selectedDepartment && (
-                                    <>
-                                        {employees  ? (
-                                        <ChakraDropdown
-                                        options={employees}
-                                        label="PERSONEL"
-                                        value={selectedEmployee}
-                                        initialValue={""}
-                                        onSelect={handleEmployeeSelect}
-                                    />
-                                    ):(
-                                        <Loading/>
-                                    )}
-                                        </>
                                 )}
-                                
+                                {selectedBranch && selectedDepartment && (
+                                    <>
+                                        {employees ? (
+                                            <ChakraDropdown
+                                                options={employees}
+                                                label="PERSONEL"
+                                                value={selectedEmployee}
+                                                initialValue={""}
+                                                onSelect={handleEmployeeSelect}
+                                            />
+                                        ) : (
+                                            <Loading />
+                                        )}
+                                    </>
+                                )}
+
                             </Stack>
                         </AccordionPanel>
-                        </AccordionItem>
-                    </Accordion>
-                    
+                    </AccordionItem>
+                </Accordion>
+
+                {chartData ? (
+                    <BarChart chartTitle={''} chartData={chartData} />
+                ) : (
+                    <Loading />
+                )}
+
+                <HStack spacing={1} overflow={'auto'} w={['sm', 'lg']}>
                     {chartData ? (
-                        <BarChart chartTitle={''} chartData={chartData}/>
-                    ): (
-                        <Loading/>
+                        <AnalysisTable data={chartData} title='TOPLAM' />
+                    ) : (
+                        <Loading />
                     )}
 
-                    <HStack spacing={1} overflow={'auto'} w={['sm', 'lg']}>
-                        {chartData ? (
-                            <AnalysisTable data={chartData} title='TOPLAM'/>
-                        ):(
-                            <Loading/>
-                        )}
-
-                        {tableData ? (
-                            <AnalysisTable data={tableData} title='İŞLEMLER'/>
-                        ):(
-                            <Loading/>
-                        )}
+                    {tableData ? (
+                        <AnalysisTable data={tableData} title='İŞLEMLER' />
+                    ) : (
+                        <Loading />
+                    )}
 
 
-                    </HStack>
-                    
+                </HStack>
 
-                </VStack>
-        
+                <Text>TOPLAM: {total}</Text>
+
+            </VStack>
+
         </ProtectedRoute>
     )
 }
